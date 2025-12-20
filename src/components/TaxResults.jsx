@@ -16,6 +16,34 @@ export default function TaxResults({ summary }) {
     <div className="bg-white rounded-lg shadow-md p-6 mb-6">
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Annual Tax Summary</h2>
       
+      {/* RSU Summary */}
+      {summary.rsu && summary.rsu.grossRSU > 0 && (
+        <div className="mb-6 p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded">
+          <h3 className="text-lg font-semibold text-gray-800 mb-3">RSU Income Summary</h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div>
+              <p className="text-sm text-gray-600">Gross RSU Value</p>
+              <p className="text-lg font-bold">{formatCurrency(summary.rsu.grossRSU)}</p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-600">US Tax Withheld</p>
+              <p className="text-lg font-bold text-red-600">{formatCurrency(summary.rsu.usTaxWithheld)}</p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-600">Net RSU Received</p>
+              <p className="text-lg font-bold text-green-600">{formatCurrency(summary.rsu.netRSU)}</p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-600">DTAA Credit</p>
+              <p className="text-lg font-bold text-blue-600">{formatCurrency(summary.rsu.dtaaCredit)}</p>
+            </div>
+          </div>
+          <p className="text-xs text-gray-500 mt-3">
+            DTAA credit reduces your Indian tax liability by the amount of US taxes paid on RSU income.
+          </p>
+        </div>
+      )}
+      
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         {/* Old Regime Card */}
         <div className={`border-2 rounded-lg p-5 ${!isNewRegimeBetter ? 'border-green-500 bg-green-50' : 'border-gray-300'}`}>
@@ -53,10 +81,16 @@ export default function TaxResults({ summary }) {
                   <span>{formatCurrency(summary.oldRegime.surcharge)}</span>
                 </div>
               )}
-              <div className="flex justify-between text-sm text-gray-500 mb-2">
+              <div className="flex justify-between text-sm text-gray-500 mb-1">
                 <span>Cess (4%):</span>
                 <span>{formatCurrency(summary.oldRegime.cess)}</span>
               </div>
+              {summary.oldRegime.dtaaCredit > 0 && (
+                <div className="flex justify-between text-sm text-blue-600 mb-2">
+                  <span>DTAA Credit (US Tax):</span>
+                  <span>-{formatCurrency(summary.oldRegime.dtaaCredit)}</span>
+                </div>
+              )}
               <div className="flex justify-between text-lg font-bold text-gray-800 pt-2 border-t">
                 <span>Total Tax:</span>
                 <span className="text-red-600">{formatCurrency(summary.oldRegime.totalTax)}</span>
@@ -111,10 +145,16 @@ export default function TaxResults({ summary }) {
                   <span>{formatCurrency(summary.newRegime.surcharge)}</span>
                 </div>
               )}
-              <div className="flex justify-between text-sm text-gray-500 mb-2">
+              <div className="flex justify-between text-sm text-gray-500 mb-1">
                 <span>Cess (4%):</span>
                 <span>{formatCurrency(summary.newRegime.cess)}</span>
               </div>
+              {summary.newRegime.dtaaCredit > 0 && (
+                <div className="flex justify-between text-sm text-blue-600 mb-2">
+                  <span>DTAA Credit (US Tax):</span>
+                  <span>-{formatCurrency(summary.newRegime.dtaaCredit)}</span>
+                </div>
+              )}
               <div className="flex justify-between text-lg font-bold text-gray-800 pt-2 border-t">
                 <span>Total Tax:</span>
                 <span className="text-red-600">{formatCurrency(summary.newRegime.totalTax)}</span>

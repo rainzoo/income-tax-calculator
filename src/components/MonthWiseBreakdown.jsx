@@ -67,6 +67,9 @@ export default function MonthWiseBreakdown({ monthlyData, selectedRegime, salary
               <TableCell align="right" sx={{ fontWeight: 'bold' }}>
                 Allowances
               </TableCell>
+              <TableCell align="right" sx={{ fontWeight: 'bold', bgcolor: 'warning.light' }}>
+                RSU (Net)
+              </TableCell>
               <TableCell align="right" sx={{ fontWeight: 'bold', bgcolor: 'grey.100' }}>
                 Gross Salary
               </TableCell>
@@ -104,6 +107,16 @@ export default function MonthWiseBreakdown({ monthlyData, selectedRegime, salary
                 <TableCell align="right">{formatCurrency(month.basic)}</TableCell>
                 <TableCell align="right">{formatCurrency(month.hra)}</TableCell>
                 <TableCell align="right">{formatCurrency(month.allowances)}</TableCell>
+                <TableCell 
+                  align="right" 
+                  sx={{ 
+                    fontWeight: month.hasRSUPayout ? 'bold' : 'normal',
+                    bgcolor: month.hasRSUPayout ? 'warning.50' : 'transparent',
+                    color: month.hasRSUPayout ? 'warning.dark' : 'inherit',
+                  }}
+                >
+                  {month.hasRSUPayout ? formatCurrency(month.netRSU) : '—'}
+                </TableCell>
                 <TableCell align="right" sx={{ fontWeight: 'semibold', bgcolor: 'grey.50' }}>
                   {formatCurrency(month.grossSalary)}
                 </TableCell>
@@ -136,6 +149,26 @@ export default function MonthWiseBreakdown({ monthlyData, selectedRegime, salary
               {formatCurrency(lastMonth.cumulativeGrossSalary)}
             </Typography>
           </Box>
+          {lastMonth.cumulativeGrossRSU > 0 && (
+            <>
+              <Box>
+                <Typography variant="body2" color="text.secondary">
+                  Total RSU (Gross)
+                </Typography>
+                <Typography variant="h6" fontWeight="bold" color="warning.main">
+                  {formatCurrency(lastMonth.cumulativeGrossRSU)}
+                </Typography>
+              </Box>
+              <Box>
+                <Typography variant="body2" color="text.secondary">
+                  US Tax Withheld
+                </Typography>
+                <Typography variant="h6" fontWeight="bold" color="error.main">
+                  {formatCurrency(lastMonth.cumulativeUSTaxWithheld)}
+                </Typography>
+              </Box>
+            </>
+          )}
           <Box>
             <Typography variant="body2" color="text.secondary">
               Total Income Tax

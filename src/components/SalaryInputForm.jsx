@@ -10,11 +10,16 @@ import {
   Checkbox,
   Divider,
   InputAdornment,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
 } from '@mui/material';
 import {
   AccountBalance,
   Home,
   Receipt,
+  TrendingUp,
 } from '@mui/icons-material';
 
 export default function SalaryInputForm({ onCalculate }) {
@@ -33,6 +38,13 @@ export default function SalaryInputForm({ onCalculate }) {
     section80D: '',
     section24B: '',
     otherDeductions: '',
+    // RSU fields
+    rsuSharesPerQuarter: '',
+    rsuPricePerShare: '',
+    rsuCurrency: 'INR',
+    rsuExchangeRate: '83.00',
+    rsuWithholdingRate: '22',
+    rsuQuarterlyMonths: [],
   });
 
   const calculateHRA = (basicSalary, isMetroCity) => {
@@ -78,6 +90,13 @@ export default function SalaryInputForm({ onCalculate }) {
       section80D: parseFloat(formData.section80D) || 0,
       section24B: parseFloat(formData.section24B) || 0,
       otherDeductions: parseFloat(formData.otherDeductions) || 0,
+      // RSU data
+      rsuSharesPerQuarter: parseFloat(formData.rsuSharesPerQuarter) || 0,
+      rsuPricePerShare: parseFloat(formData.rsuPricePerShare) || 0,
+      rsuCurrency: formData.rsuCurrency,
+      rsuExchangeRate: parseFloat(formData.rsuExchangeRate) || 83.00,
+      rsuWithholdingRate: parseFloat(formData.rsuWithholdingRate) || 22,
+      rsuQuarterlyMonths: formData.rsuQuarterlyMonths,
     };
     onCalculate(salaryData);
   };
@@ -317,6 +336,129 @@ export default function SalaryInputForm({ onCalculate }) {
             </Grid>
           </Box>
         )}
+
+        {/* RSU Section */}
+        <Box
+          sx={{
+            p: 3,
+            mb: 4,
+            borderRadius: 2,
+            bgcolor: 'warning.light',
+            background: 'linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%)',
+          }}
+        >
+          <Box display="flex" alignItems="center" mb={3}>
+            <TrendingUp sx={{ mr: 2, color: 'warning.main', fontSize: 28 }} />
+            <Box>
+              <Typography variant="h6" fontWeight="semibold">
+                RSU (Restricted Stock Units)
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Quarterly payouts from US-based company
+              </Typography>
+            </Box>
+          </Box>
+
+          <Divider sx={{ mb: 3 }} />
+
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Number of Shares per Quarter"
+                name="rsuSharesPerQuarter"
+                value={formData.rsuSharesPerQuarter}
+                onChange={handleChange}
+                type="number"
+                helperText="RSU shares vested each quarter"
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Price per Share"
+                name="rsuPricePerShare"
+                value={formData.rsuPricePerShare}
+                onChange={handleChange}
+                type="number"
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">
+                    {formData.rsuCurrency === 'USD' ? '$' : '₹'}
+                  </InputAdornment>,
+                }}
+                helperText="Vesting price per share"
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={4}>
+              <FormControl fullWidth>
+                <InputLabel>Currency</InputLabel>
+                <Select
+                  name="rsuCurrency"
+                  value={formData.rsuCurrency}
+                  onChange={handleChange}
+                  label="Currency"
+                >
+                  <MenuItem value="INR">INR (Indian Rupee)</MenuItem>
+                  <MenuItem value="USD">USD (US Dollar)</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+
+            {formData.rsuCurrency === 'USD' && (
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  fullWidth
+                  label="USD to INR Exchange Rate"
+                  name="rsuExchangeRate"
+                  value={formData.rsuExchangeRate}
+                  onChange={handleChange}
+                  type="number"
+                  helperText="Current exchange rate"
+                />
+              </Grid>
+            )}
+
+            <Grid item xs={12} sm={4}>
+              <TextField
+                fullWidth
+                label="US Tax Withholding Rate (%)"
+                name="rsuWithholdingRate"
+                value={formData.rsuWithholdingRate}
+                onChange={handleChange}
+                type="number"
+                helperText="Default: 22% for supplemental income"
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <FormControl fullWidth>
+                <InputLabel>Quarterly Payout Months</InputLabel>
+                <Select
+                  multiple
+                  name="rsuQuarterlyMonths"
+                  value={formData.rsuQuarterlyMonths}
+                  onChange={(e) => {
+                    setFormData((prev) => ({
+                      ...prev,
+                      rsuQuarterlyMonths: typeof e.target.value === 'string' 
+                        ? e.target.value.split(',') 
+                        : e.target.value,
+                    }));
+                  }}
+                  label="Quarterly Payout Months"
+                  renderValue={(selected) => selected.join(', ')}
+                >
+                  <MenuItem value="March">March (Q1)</MenuItem>
+                  <MenuItem value="June">June (Q2)</MenuItem>
+                  <MenuItem value="September">September (Q3)</MenuItem>
+                  <MenuItem value="December">December (Q4)</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
+        </Box>
 
         {/* Deductions Section */}
         <Box
