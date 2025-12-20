@@ -1,4 +1,18 @@
-export default function MonthWiseBreakdown({ monthlyData }) {
+import {
+  Paper,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Box,
+  Chip,
+} from '@mui/material';
+import { CalendarMonth } from '@mui/icons-material';
+
+export default function MonthWiseBreakdown({ monthlyData, selectedRegime, salaryData }) {
   if (!monthlyData || monthlyData.length === 0) return null;
 
   const formatCurrency = (amount) => {
@@ -9,115 +23,156 @@ export default function MonthWiseBreakdown({ monthlyData }) {
     }).format(amount);
   };
 
-  return (
-    <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Month-wise Breakdown</h2>
-      
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider sticky left-0 bg-gray-50 z-10">
-                Month
-              </th>
-              <th className="px-4 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
-                Gross Salary
-              </th>
-              <th className="px-4 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
-                Cumulative Gross
-              </th>
-              <th className="px-4 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider bg-red-50">
-                Tax (Old)
-              </th>
-              <th className="px-4 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider bg-red-50">
-                Cumulative Tax (Old)
-              </th>
-              <th className="px-4 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider bg-blue-50">
-                Tax (New)
-              </th>
-              <th className="px-4 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider bg-blue-50">
-                Cumulative Tax (New)
-              </th>
-              <th className="px-4 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider bg-green-50">
-                Net Salary (Old)
-              </th>
-              <th className="px-4 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider bg-green-50">
-                Net Salary (New)
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {monthlyData.map((month, index) => (
-              <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 sticky left-0 bg-inherit z-10">
-                  {month.month}
-                </td>
-                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 text-right">
-                  {formatCurrency(month.grossSalary)}
-                </td>
-                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 text-right font-semibold">
-                  {formatCurrency(month.cumulativeGrossSalary)}
-                </td>
-                <td className="px-4 py-3 whitespace-nowrap text-sm text-red-600 text-right bg-red-50">
-                  {formatCurrency(month.monthlyOldTax)}
-                </td>
-                <td className="px-4 py-3 whitespace-nowrap text-sm text-red-600 text-right bg-red-50 font-semibold">
-                  {formatCurrency(month.cumulativeOldTax)}
-                </td>
-                <td className="px-4 py-3 whitespace-nowrap text-sm text-blue-600 text-right bg-blue-50">
-                  {formatCurrency(month.monthlyNewTax)}
-                </td>
-                <td className="px-4 py-3 whitespace-nowrap text-sm text-blue-600 text-right bg-blue-50 font-semibold">
-                  {formatCurrency(month.cumulativeNewTax)}
-                </td>
-                <td className="px-4 py-3 whitespace-nowrap text-sm text-green-600 text-right bg-green-50">
-                  {formatCurrency(month.netSalaryOld)}
-                </td>
-                <td className="px-4 py-3 whitespace-nowrap text-sm text-green-600 text-right bg-green-50">
-                  {formatCurrency(month.netSalaryNew)}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-          <tfoot className="bg-gray-100">
-            <tr className="font-bold">
-              <td className="px-4 py-3 text-sm text-gray-900 sticky left-0 bg-gray-100 z-10">
-                Total (Annual)
-              </td>
-              <td className="px-4 py-3 text-sm text-gray-900 text-right">
-                {formatCurrency(monthlyData[monthlyData.length - 1].cumulativeGrossSalary)}
-              </td>
-              <td className="px-4 py-3 text-sm text-gray-900 text-right">
-                {formatCurrency(monthlyData[monthlyData.length - 1].cumulativeGrossSalary)}
-              </td>
-              <td className="px-4 py-3 text-sm text-red-700 text-right bg-red-100">
-                {formatCurrency(monthlyData[monthlyData.length - 1].cumulativeOldTax / monthlyData.length)}
-              </td>
-              <td className="px-4 py-3 text-sm text-red-700 text-right bg-red-100">
-                {formatCurrency(monthlyData[monthlyData.length - 1].cumulativeOldTax)}
-              </td>
-              <td className="px-4 py-3 text-sm text-blue-700 text-right bg-blue-100">
-                {formatCurrency(monthlyData[monthlyData.length - 1].cumulativeNewTax / monthlyData.length)}
-              </td>
-              <td className="px-4 py-3 text-sm text-blue-700 text-right bg-blue-100">
-                {formatCurrency(monthlyData[monthlyData.length - 1].cumulativeNewTax)}
-              </td>
-              <td className="px-4 py-3 text-sm text-green-700 text-right bg-green-100">
-                {formatCurrency(monthlyData[monthlyData.length - 1].cumulativeGrossSalary - monthlyData[monthlyData.length - 1].cumulativeOldTax)}
-              </td>
-              <td className="px-4 py-3 text-sm text-green-700 text-right bg-green-100">
-                {formatCurrency(monthlyData[monthlyData.length - 1].cumulativeGrossSalary - monthlyData[monthlyData.length - 1].cumulativeNewTax)}
-              </td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
+  const isOldRegime = selectedRegime === 'old';
+  const lastMonth = monthlyData[monthlyData.length - 1];
 
-      <div className="mt-4 text-xs text-gray-500">
-        <p className="mb-2"><strong>Note:</strong> Tax is calculated on an annual basis and distributed evenly across 12 months.</p>
-        <p>Cumulative values show the running total from April to the respective month.</p>
-      </div>
-    </div>
+  return (
+    <Paper elevation={3} sx={{ p: 4, mb: 4, borderRadius: 2 }}>
+      <Box display="flex" alignItems="center" mb={3}>
+        <CalendarMonth sx={{ mr: 2, color: 'primary.main', fontSize: 32 }} />
+        <Box>
+          <Typography variant="h5" component="h2" fontWeight="bold">
+            Month-wise Breakdown
+          </Typography>
+          <Chip
+            label={isOldRegime ? 'Old Regime' : 'New Regime'}
+            color={isOldRegime ? 'error' : 'primary'}
+            size="small"
+            sx={{ mt: 1 }}
+          />
+        </Box>
+      </Box>
+
+      <TableContainer sx={{ maxHeight: 600 }}>
+        <Table stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell
+                sx={{
+                  position: 'sticky',
+                  left: 0,
+                  zIndex: 3,
+                  bgcolor: 'background.paper',
+                  fontWeight: 'bold',
+                }}
+              >
+                Month
+              </TableCell>
+              <TableCell align="right" sx={{ fontWeight: 'bold' }}>
+                Basic
+              </TableCell>
+              <TableCell align="right" sx={{ fontWeight: 'bold' }}>
+                HRA
+              </TableCell>
+              <TableCell align="right" sx={{ fontWeight: 'bold' }}>
+                Allowances
+              </TableCell>
+              <TableCell align="right" sx={{ fontWeight: 'bold', bgcolor: 'grey.100' }}>
+                Gross Salary
+              </TableCell>
+              <TableCell align="right" sx={{ fontWeight: 'bold', bgcolor: 'error.light', color: 'error.dark' }}>
+                Income Tax
+              </TableCell>
+              <TableCell align="right" sx={{ fontWeight: 'bold', bgcolor: 'info.light', color: 'info.dark' }}>
+                Provident Fund
+              </TableCell>
+              <TableCell align="right" sx={{ fontWeight: 'bold', bgcolor: 'success.light', color: 'success.dark' }}>
+                Net Salary
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {monthlyData.map((month, index) => (
+              <TableRow
+                key={index}
+                sx={{
+                  '&:nth-of-type(odd)': { bgcolor: 'action.hover' },
+                  '&:hover': { bgcolor: 'action.selected' },
+                }}
+              >
+                <TableCell
+                  sx={{
+                    position: 'sticky',
+                    left: 0,
+                    zIndex: 2,
+                    bgcolor: 'inherit',
+                    fontWeight: 'medium',
+                  }}
+                >
+                  {month.month}
+                </TableCell>
+                <TableCell align="right">{formatCurrency(month.basic)}</TableCell>
+                <TableCell align="right">{formatCurrency(month.hra)}</TableCell>
+                <TableCell align="right">{formatCurrency(month.allowances)}</TableCell>
+                <TableCell align="right" sx={{ fontWeight: 'semibold', bgcolor: 'grey.50' }}>
+                  {formatCurrency(month.grossSalary)}
+                </TableCell>
+                <TableCell align="right" sx={{ color: 'error.main', fontWeight: 'medium' }}>
+                  {formatCurrency(isOldRegime ? month.incomeTaxOld : month.incomeTaxNew)}
+                </TableCell>
+                <TableCell align="right" sx={{ color: 'info.main', fontWeight: 'medium' }}>
+                  {formatCurrency(month.providentFund)}
+                </TableCell>
+                <TableCell align="right" sx={{ color: 'success.main', fontWeight: 'bold' }}>
+                  {formatCurrency(isOldRegime ? month.netSalaryOld : month.netSalaryNew)}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      {/* Annual Summary */}
+      <Box mt={4} p={3} bgcolor="grey.50" borderRadius={2}>
+        <Typography variant="h6" fontWeight="bold" gutterBottom>
+          Annual Summary
+        </Typography>
+        <Box display="flex" justifyContent="space-between" flexWrap="wrap" gap={2}>
+          <Box>
+            <Typography variant="body2" color="text.secondary">
+              Total Gross Salary
+            </Typography>
+            <Typography variant="h6" fontWeight="bold">
+              {formatCurrency(lastMonth.cumulativeGrossSalary)}
+            </Typography>
+          </Box>
+          <Box>
+            <Typography variant="body2" color="text.secondary">
+              Total Income Tax
+            </Typography>
+            <Typography variant="h6" fontWeight="bold" color="error.main">
+              {formatCurrency(isOldRegime ? lastMonth.cumulativeOldTax : lastMonth.cumulativeNewTax)}
+            </Typography>
+          </Box>
+          <Box>
+            <Typography variant="body2" color="text.secondary">
+              Total Provident Fund
+            </Typography>
+            <Typography variant="h6" fontWeight="bold" color="info.main">
+              {formatCurrency(lastMonth.cumulativeProvidentFund)}
+            </Typography>
+          </Box>
+          <Box>
+            <Typography variant="body2" color="text.secondary">
+              Net Salary (Annual)
+            </Typography>
+            <Typography variant="h6" fontWeight="bold" color="success.main">
+              {formatCurrency(
+                isOldRegime
+                  ? lastMonth.cumulativeGrossSalary - lastMonth.cumulativeOldTax - lastMonth.cumulativeProvidentFund
+                  : lastMonth.cumulativeGrossSalary - lastMonth.cumulativeNewTax - lastMonth.cumulativeProvidentFund
+              )}
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+
+      <Box mt={3}>
+        <Typography variant="caption" color="text.secondary">
+          <strong>Note:</strong> Tax is calculated on an annual basis and distributed evenly across 12 months.
+          Provident Fund is calculated as 12% of basic salary (employee contribution).
+        </Typography>
+      </Box>
+    </Paper>
   );
 }
-

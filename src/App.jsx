@@ -5,6 +5,7 @@ import SalaryInputForm from './components/SalaryInputForm';
 import TaxResults from './components/TaxResults';
 import MonthWiseBreakdown from './components/MonthWiseBreakdown';
 import ComparisonTable from './components/ComparisonTable';
+import RegimeSelector from './components/RegimeSelector';
 import { calculateAnnualSummary, calculateMonthlyBreakdown } from './utils/taxCalculator';
 
 const theme = createTheme({
@@ -35,13 +36,16 @@ const theme = createTheme({
 function App() {
   const [summary, setSummary] = useState(null);
   const [monthlyData, setMonthlyData] = useState(null);
+  const [selectedRegime, setSelectedRegime] = useState('old');
+  const [salaryData, setSalaryData] = useState(null);
 
-  const handleCalculate = (salaryData) => {
-    const annualSummary = calculateAnnualSummary(salaryData);
-    const monthlyBreakdown = calculateMonthlyBreakdown(salaryData);
+  const handleCalculate = (data) => {
+    const annualSummary = calculateAnnualSummary(data);
+    const monthlyBreakdown = calculateMonthlyBreakdown(data);
 
     setSummary(annualSummary);
     setMonthlyData(monthlyBreakdown);
+    setSalaryData(data);
 
     // Scroll to results
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -58,7 +62,12 @@ function App() {
             <Box mb={4}>
               <TaxResults summary={summary} />
               <ComparisonTable summary={summary} />
-              <MonthWiseBreakdown monthlyData={monthlyData} />
+              <RegimeSelector regime={selectedRegime} onChange={setSelectedRegime} />
+              <MonthWiseBreakdown
+                monthlyData={monthlyData}
+                selectedRegime={selectedRegime}
+                salaryData={salaryData}
+              />
             </Box>
           )}
 

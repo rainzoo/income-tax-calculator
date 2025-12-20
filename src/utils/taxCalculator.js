@@ -190,11 +190,24 @@ export function calculateNewRegimeTax(salaryData) {
 }
 
 /**
- * Calculate monthly breakdown
+ * Calculate monthly breakdown with detailed components
  */
 export function calculateMonthlyBreakdown(salaryData) {
     const grossSalary = calculateGrossSalary(salaryData);
     const monthlyGross = grossSalary / 12;
+
+    // Monthly salary components
+    const monthlyBasic = (salaryData.basicSalary || 0) / 12;
+    const monthlyHRA = (salaryData.hra || 0) / 12;
+    const monthlyAllowances = (
+        (salaryData.specialAllowance || 0) +
+        (salaryData.lta || 0) +
+        (salaryData.medicalAllowance || 0) +
+        (salaryData.otherAllowances || 0)
+    ) / 12;
+
+    // Provident Fund (EPF) - Employee contribution is 12% of basic salary
+    const monthlyProvidentFund = (salaryData.basicSalary || 0) * 0.12 / 12;
 
     const oldRegimeResult = calculateOldRegimeTax(salaryData);
     const newRegimeResult = calculateNewRegimeTax(salaryData);
@@ -208,21 +221,38 @@ export function calculateMonthlyBreakdown(salaryData) {
     ];
 
     return months.map((month, index) => {
-        // Calculate cumulative tax up to this month
+        // Calculate cumulative values up to this month
+        const cumulativeBasic = monthlyBasic * (index + 1);
+        const cumulativeHRA = monthlyHRA * (index + 1);
+        const cumulativeAllowances = monthlyAllowances * (index + 1);
+        const cumulativeProvidentFund = monthlyProvidentFund * (index + 1);
         const cumulativeOldTax = monthlyOldTax * (index + 1);
         const cumulativeNewTax = monthlyNewTax * (index + 1);
+        const cumulativeGrossSalary = monthlyGross * (index + 1);
 
         return {
             month,
             monthNumber: index + 1,
-            grossSalary: monthlyGross,
-            cumulativeGrossSalary: monthlyGross * (index + 1),
-            monthlyOldTax: Math.round(monthlyOldTax),
+            // Monthly components
+            basic: Math.round(monthlyBasic),
+            hra: Math.round(monthlyHRA),
+            allowances: Math.round(monthlyAllowances),
+            grossSalary: Math.round(monthlyGross),
+            // Deductions
+            providentFund: Math.round(monthlyProvidentFund),
+            incomeTaxOld: Math.round(monthlyOldTax),
+            incomeTaxNew: Math.round(monthlyNewTax),
+            // Cumulative
+            cumulativeBasic: Math.round(cumulativeBasic),
+            cumulativeHRA: Math.round(cumulativeHRA),
+            cumulativeAllowances: Math.round(cumulativeAllowances),
+            cumulativeGrossSalary: Math.round(cumulativeGrossSalary),
+            cumulativeProvidentFund: Math.round(cumulativeProvidentFund),
             cumulativeOldTax: Math.round(cumulativeOldTax),
-            monthlyNewTax: Math.round(monthlyNewTax),
             cumulativeNewTax: Math.round(cumulativeNewTax),
-            netSalaryOld: Math.round(monthlyGross - monthlyOldTax),
-            netSalaryNew: Math.round(monthlyGross - monthlyNewTax),
+            // Net salary
+            netSalaryOld: Math.round(monthlyGross - monthlyOldTax - monthlyProvidentFund),
+            netSalaryNew: Math.round(monthlyGross - monthlyNewTax - monthlyProvidentFund),
         };
     });
 }

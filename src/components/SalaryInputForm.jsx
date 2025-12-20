@@ -27,18 +27,38 @@ export default function SalaryInputForm({ onCalculate }) {
     otherAllowances: '',
     rentPaid: '',
     isMetroCity: false,
+    autoCalculateHRA: false,
     section80C: '',
     section80D: '',
     section24B: '',
     otherDeductions: '',
   });
 
+  const calculateHRA = (basicSalary, isMetroCity) => {
+    if (!basicSalary || parseFloat(basicSalary) <= 0) return '';
+    const basic = parseFloat(basicSalary);
+    const hraPercentage = isMetroCity ? 0.5 : 0.4; // 50% for metro, 40% for non-metro
+    return Math.round(basic * hraPercentage).toString();
+  };
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
+
+    setFormData((prev) => {
+      const newData = {
+        ...prev,
+        [name]: type === 'checkbox' ? checked : value,
+      };
+
+      // Auto-calculate HRA if enabled
+      if (newData.autoCalculateHRA) {
+        if (name === 'basicSalary' || name === 'isMetroCity' || name === 'autoCalculateHRA') {
+          newData.hra = calculateHRA(newData.basicSalary, newData.isMetroCity);
+        }
+      }
+
+      return newData;
+    });
   };
 
   const handleSubmit = (e) => {
@@ -122,10 +142,45 @@ export default function SalaryInputForm({ onCalculate }) {
                 value={formData.hra}
                 onChange={handleChange}
                 type="number"
+                disabled={formData.autoCalculateHRA}
                 InputProps={{
                   startAdornment: <InputAdornment position="start">₹</InputAdornment>,
                 }}
+                helperText={
+                  formData.autoCalculateHRA
+                    ? `Auto-calculated: ${formData.isMetroCity ? '50%' : '40%'} of basic`
+                    : ''
+                }
               />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <Box display="flex" alignItems="center" gap={3} height="100%" minHeight={56}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={formData.autoCalculateHRA}
+                      onChange={handleChange}
+                      name="autoCalculateHRA"
+                      color="primary"
+                    />
+                  }
+                  label="Auto-calculate HRA"
+                />
+                {formData.autoCalculateHRA && (
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={formData.isMetroCity}
+                        onChange={handleChange}
+                        name="isMetroCity"
+                        color="primary"
+                      />
+                    }
+                    label="Living in Metro City"
+                  />
+                )}
+              </Box>
             </Grid>
 
             <Grid item xs={12} sm={6}>
@@ -238,16 +293,7 @@ export default function SalaryInputForm({ onCalculate }) {
                         color="success"
                       />
                     }
-                    label={
-                      <Box>
-                        <Typography variant="body1" fontWeight="medium">
-                          Living in Metro City
-                        </Typography>
-                        <Typography variant="caption" color="text.secondary">
-                          Delhi, Mumbai, Chennai, or Kolkata
-                        </Typography>
-                      </Box>
-                    }
+                    label="Living in Metro City"
                   />
                 </Box>
               </Grid>
