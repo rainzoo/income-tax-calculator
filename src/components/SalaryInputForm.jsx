@@ -1,4 +1,21 @@
 import { useState } from 'react';
+import {
+  Box,
+  Paper,
+  Typography,
+  TextField,
+  Button,
+  Grid,
+  FormControlLabel,
+  Checkbox,
+  Divider,
+  InputAdornment,
+} from '@mui/material';
+import {
+  AccountBalance,
+  Home,
+  Receipt,
+} from '@mui/icons-material';
 
 export default function SalaryInputForm({ onCalculate }) {
   const [formData, setFormData] = useState({
@@ -43,220 +60,309 @@ export default function SalaryInputForm({ onCalculate }) {
     onCalculate(salaryData);
   };
 
-  const formatCurrency = (value) => {
-    if (!value) return '';
-    return new Intl.NumberFormat('en-IN', {
-      maximumFractionDigits: 0,
-    }).format(value);
-  };
-
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Salary Details</h2>
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Salary Components */}
-          <div className="md:col-span-2">
-            <h3 className="text-lg font-semibold text-gray-700 mb-4">Salary Components</h3>
-          </div>
+    <Paper elevation={3} sx={{ p: 4, mb: 4, borderRadius: 2 }}>
+      <Box mb={4}>
+        <Typography variant="h4" component="h2" fontWeight="bold" gutterBottom>
+          Salary Details
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Enter your annual salary components and deductions
+        </Typography>
+      </Box>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Basic Salary (Annual) <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="number"
-              name="basicSalary"
-              value={formData.basicSalary}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Enter basic salary"
-            />
-          </div>
+      <form onSubmit={handleSubmit}>
+        {/* Salary Components Section */}
+        <Box
+          sx={{
+            p: 3,
+            mb: 4,
+            borderRadius: 2,
+            bgcolor: 'primary.light',
+            background: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)',
+          }}
+        >
+          <Box display="flex" alignItems="center" mb={3}>
+            <AccountBalance sx={{ mr: 2, color: 'primary.main', fontSize: 28 }} />
+            <Box>
+              <Typography variant="h6" fontWeight="semibold">
+                Salary Components
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Enter all components of your annual salary
+              </Typography>
+            </Box>
+          </Box>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              House Rent Allowance (HRA)
-            </label>
-            <input
-              type="number"
-              name="hra"
-              value={formData.hra}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Enter HRA"
-            />
-          </div>
+          <Divider sx={{ mb: 3 }} />
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Special Allowance
-            </label>
-            <input
-              type="number"
-              name="specialAllowance"
-              value={formData.specialAllowance}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Enter special allowance"
-            />
-          </div>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                required
+                label="Basic Salary (Annual)"
+                name="basicSalary"
+                value={formData.basicSalary}
+                onChange={handleChange}
+                type="number"
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">₹</InputAdornment>,
+                }}
+                helperText="Your base annual salary"
+                sx={{ mb: 2 }}
+              />
+            </Grid>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Leave Travel Allowance (LTA)
-            </label>
-            <input
-              type="number"
-              name="lta"
-              value={formData.lta}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Enter LTA"
-            />
-          </div>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="House Rent Allowance (HRA)"
+                name="hra"
+                value={formData.hra}
+                onChange={handleChange}
+                type="number"
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">₹</InputAdornment>,
+                }}
+              />
+            </Grid>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Medical Allowance
-            </label>
-            <input
-              type="number"
-              name="medicalAllowance"
-              value={formData.medicalAllowance}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Enter medical allowance"
-            />
-          </div>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Special Allowance"
+                name="specialAllowance"
+                value={formData.specialAllowance}
+                onChange={handleChange}
+                type="number"
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">₹</InputAdornment>,
+                }}
+              />
+            </Grid>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Other Allowances
-            </label>
-            <input
-              type="number"
-              name="otherAllowances"
-              value={formData.otherAllowances}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Enter other allowances"
-            />
-          </div>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Leave Travel Allowance (LTA)"
+                name="lta"
+                value={formData.lta}
+                onChange={handleChange}
+                type="number"
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">₹</InputAdornment>,
+                }}
+              />
+            </Grid>
 
-          {/* HRA Details */}
-          {(formData.hra && parseFloat(formData.hra) > 0) && (
-            <>
-              <div className="md:col-span-2 mt-4">
-                <h3 className="text-lg font-semibold text-gray-700 mb-4">HRA Exemption Details</h3>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Rent Paid (Annual)
-                </label>
-                <input
-                  type="number"
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Medical Allowance"
+                name="medicalAllowance"
+                value={formData.medicalAllowance}
+                onChange={handleChange}
+                type="number"
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">₹</InputAdornment>,
+                }}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Other Allowances"
+                name="otherAllowances"
+                value={formData.otherAllowances}
+                onChange={handleChange}
+                type="number"
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">₹</InputAdornment>,
+                }}
+              />
+            </Grid>
+          </Grid>
+        </Box>
+
+        {/* HRA Exemption Details Section */}
+        {(formData.hra && parseFloat(formData.hra) > 0) && (
+          <Box
+            sx={{
+              p: 3,
+              mb: 4,
+              borderRadius: 2,
+              bgcolor: 'success.light',
+              background: 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)',
+            }}
+          >
+            <Box display="flex" alignItems="center" mb={3}>
+              <Home sx={{ mr: 2, color: 'success.main', fontSize: 28 }} />
+              <Box>
+                <Typography variant="h6" fontWeight="semibold">
+                  HRA Exemption Details
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Required for calculating HRA tax exemption
+                </Typography>
+              </Box>
+            </Box>
+
+            <Divider sx={{ mb: 3 }} />
+
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label="Annual Rent Paid"
                   name="rentPaid"
                   value={formData.rentPaid}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Enter annual rent paid"
+                  type="number"
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">₹</InputAdornment>,
+                  }}
+                  helperText="Total rent paid in the financial year"
                 />
-              </div>
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  name="isMetroCity"
-                  checked={formData.isMetroCity}
-                  onChange={handleChange}
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                />
-                <label className="ml-2 block text-sm text-gray-700">
-                  Metro City (Delhi, Mumbai, Chennai, Kolkata)
-                </label>
-              </div>
-            </>
-          )}
+              </Grid>
 
-          {/* Deductions */}
-          <div className="md:col-span-2 mt-4">
-            <h3 className="text-lg font-semibold text-gray-700 mb-4">Deductions (Old Regime Only)</h3>
-          </div>
+              <Grid item xs={12} sm={6}>
+                <Box display="flex" alignItems="center" height="100%">
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={formData.isMetroCity}
+                        onChange={handleChange}
+                        name="isMetroCity"
+                        color="success"
+                      />
+                    }
+                    label={
+                      <Box>
+                        <Typography variant="body1" fontWeight="medium">
+                          Living in Metro City
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          Delhi, Mumbai, Chennai, or Kolkata
+                        </Typography>
+                      </Box>
+                    }
+                  />
+                </Box>
+              </Grid>
+            </Grid>
+          </Box>
+        )}
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Section 80C (Max ₹1,50,000)
-              <span className="text-xs text-gray-500 block">EPF, PPF, ELSS, etc.</span>
-            </label>
-            <input
-              type="number"
-              name="section80C"
-              value={formData.section80C}
-              onChange={handleChange}
-              max="150000"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Enter 80C deductions"
-            />
-          </div>
+        {/* Deductions Section */}
+        <Box
+          sx={{
+            p: 3,
+            mb: 4,
+            borderRadius: 2,
+            bgcolor: 'secondary.light',
+            background: 'linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%)',
+          }}
+        >
+          <Box display="flex" alignItems="center" mb={3}>
+            <Receipt sx={{ mr: 2, color: 'secondary.main', fontSize: 28 }} />
+            <Box>
+              <Typography variant="h6" fontWeight="semibold">
+                Tax Deductions
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Applicable only for Old Tax Regime
+              </Typography>
+            </Box>
+          </Box>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Section 80D (Health Insurance)
-              <span className="text-xs text-gray-500 block">Self/Family: ₹25K, Parents: ₹50K</span>
-            </label>
-            <input
-              type="number"
-              name="section80D"
-              value={formData.section80D}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Enter 80D deductions"
-            />
-          </div>
+          <Divider sx={{ mb: 3 }} />
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Section 24(b) - Home Loan Interest
-              <span className="text-xs text-gray-500 block">Max ₹2,00,000</span>
-            </label>
-            <input
-              type="number"
-              name="section24B"
-              value={formData.section24B}
-              onChange={handleChange}
-              max="200000"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Enter home loan interest"
-            />
-          </div>
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Section 80C Deductions"
+                name="section80C"
+                value={formData.section80C}
+                onChange={handleChange}
+                type="number"
+                inputProps={{ max: 150000 }}
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">₹</InputAdornment>,
+                }}
+                helperText="Max ₹1,50,000 | EPF, PPF, ELSS, Life Insurance, etc."
+              />
+            </Grid>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Other Deductions
-              <span className="text-xs text-gray-500 block">80G, 80TTA, etc.</span>
-            </label>
-            <input
-              type="number"
-              name="otherDeductions"
-              value={formData.otherDeductions}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Enter other deductions"
-            />
-          </div>
-        </div>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Section 80D - Health Insurance"
+                name="section80D"
+                value={formData.section80D}
+                onChange={handleChange}
+                type="number"
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">₹</InputAdornment>,
+                }}
+                helperText="Self/Family: ₹25K | Parents: ₹50K"
+              />
+            </Grid>
 
-        <div className="flex justify-end">
-          <button
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Section 24(b) - Home Loan Interest"
+                name="section24B"
+                value={formData.section24B}
+                onChange={handleChange}
+                type="number"
+                inputProps={{ max: 200000 }}
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">₹</InputAdornment>,
+                }}
+                helperText="Max ₹2,00,000 | Interest paid on home loan"
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Other Deductions"
+                name="otherDeductions"
+                value={formData.otherDeductions}
+                onChange={handleChange}
+                type="number"
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">₹</InputAdornment>,
+                }}
+                helperText="Section 80G, 80TTA, 80EE, etc."
+              />
+            </Grid>
+          </Grid>
+        </Box>
+
+        {/* Submit Button */}
+        <Box display="flex" justifyContent="center" pt={2}>
+          <Button
             type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-200 shadow-md hover:shadow-lg"
+            variant="contained"
+            size="large"
+            sx={{
+              px: 6,
+              py: 1.5,
+              fontSize: '1.1rem',
+              fontWeight: 'bold',
+              borderRadius: 2,
+              textTransform: 'none',
+            }}
           >
             Calculate Tax
-          </button>
-        </div>
+          </Button>
+        </Box>
       </form>
-    </div>
+    </Paper>
   );
 }
-
