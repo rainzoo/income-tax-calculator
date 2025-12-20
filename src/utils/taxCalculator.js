@@ -85,7 +85,8 @@ export function calculateGrossSalary(salaryData) {
         (salaryData.specialAllowance || 0) +
         (salaryData.lta || 0) +
         (salaryData.medicalAllowance || 0) +
-        (salaryData.otherAllowances || 0)
+        (salaryData.otherAllowances || 0) +
+        (salaryData.perquisites || 0)
     );
 }
 
@@ -203,7 +204,8 @@ export function calculateMonthlyBreakdown(salaryData) {
         (salaryData.specialAllowance || 0) +
         (salaryData.lta || 0) +
         (salaryData.medicalAllowance || 0) +
-        (salaryData.otherAllowances || 0)
+        (salaryData.otherAllowances || 0) +
+        (salaryData.perquisites || 0)
     ) / 12;
 
     // Provident Fund (EPF) - Employee contribution is 12% of basic salary

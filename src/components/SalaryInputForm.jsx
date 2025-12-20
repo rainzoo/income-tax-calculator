@@ -25,6 +25,7 @@ export default function SalaryInputForm({ onCalculate }) {
     lta: '',
     medicalAllowance: '',
     otherAllowances: '',
+    perquisites: '',
     rentPaid: '',
     isMetroCity: false,
     autoCalculateHRA: false,
@@ -70,6 +71,7 @@ export default function SalaryInputForm({ onCalculate }) {
       lta: parseFloat(formData.lta) || 0,
       medicalAllowance: parseFloat(formData.medicalAllowance) || 0,
       otherAllowances: parseFloat(formData.otherAllowances) || 0,
+      perquisites: parseFloat(formData.perquisites) || 0,
       rentPaid: parseFloat(formData.rentPaid) || 0,
       isMetroCity: formData.isMetroCity,
       section80C: parseFloat(formData.section80C) || 0,
@@ -236,6 +238,21 @@ export default function SalaryInputForm({ onCalculate }) {
                 InputProps={{
                   startAdornment: <InputAdornment position="start">₹</InputAdornment>,
                 }}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Perquisites"
+                name="perquisites"
+                value={formData.perquisites}
+                onChange={handleChange}
+                type="number"
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">₹</InputAdornment>,
+                }}
+                helperText="Additional benefits (car, driver, etc.)"
               />
             </Grid>
           </Grid>
