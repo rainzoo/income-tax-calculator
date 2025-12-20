@@ -67,19 +67,19 @@ export default function MonthWiseBreakdown({ monthlyData, selectedRegime, salary
               <TableCell align="right" sx={{ fontWeight: 'bold' }}>
                 Allowances
               </TableCell>
-              <TableCell align="right" sx={{ fontWeight: 'bold', bgcolor: 'warning.light' }}>
+              <TableCell align="right" sx={{ fontWeight: 'bold', bgcolor: 'warning.main', color: 'warning.contrastText' }}>
                 RSU (Net)
               </TableCell>
-              <TableCell align="right" sx={{ fontWeight: 'bold', bgcolor: 'grey.100' }}>
+              <TableCell align="right" sx={{ fontWeight: 'bold', bgcolor: 'grey.200', color: 'grey.800' }}>
                 Gross Salary
               </TableCell>
-              <TableCell align="right" sx={{ fontWeight: 'bold', bgcolor: 'error.light', color: 'error.dark' }}>
+              <TableCell align="right" sx={{ fontWeight: 'bold', bgcolor: 'error.main', color: 'error.contrastText' }}>
                 Income Tax
               </TableCell>
-              <TableCell align="right" sx={{ fontWeight: 'bold', bgcolor: 'info.light', color: 'info.dark' }}>
+              <TableCell align="right" sx={{ fontWeight: 'bold', bgcolor: 'info.main', color: 'info.contrastText' }}>
                 Provident Fund
               </TableCell>
-              <TableCell align="right" sx={{ fontWeight: 'bold', bgcolor: 'success.light', color: 'success.dark' }}>
+              <TableCell align="right" sx={{ fontWeight: 'bold', bgcolor: 'success.main', color: 'success.contrastText' }}>
                 Net Salary
               </TableCell>
             </TableRow>
