@@ -21,6 +21,7 @@ import {
   Receipt,
   TrendingUp,
 } from '@mui/icons-material';
+import { FORM_CONSTANTS } from '../constants/taxRules.js';
 
 export default function SalaryInputForm({ onCalculate }) {
   const [formData, setFormData] = useState({
@@ -66,7 +67,7 @@ export default function SalaryInputForm({ onCalculate }) {
   const calculateHRA = (basicSalary, isMetroCity) => {
     if (!basicSalary || parseFloat(basicSalary) <= 0) return '';
     const basic = parseFloat(basicSalary);
-    const hraPercentage = isMetroCity ? 0.5 : 0.4; // 50% for metro, 40% for non-metro
+    const hraPercentage = isMetroCity ? FORM_CONSTANTS.HRA_METRO_PERCENTAGE : FORM_CONSTANTS.HRA_NON_METRO_PERCENTAGE;
     return Math.round(basic * hraPercentage).toString();
   };
 
@@ -534,7 +535,7 @@ export default function SalaryInputForm({ onCalculate }) {
                 InputProps={{
                   startAdornment: <InputAdornment position="start">₹</InputAdornment>,
                 }}
-                helperText="Max ₹1,50,000 | EPF, PPF, ELSS, Life Insurance, etc."
+                helperText={`Max ₹${FORM_CONSTANTS.SECTION_80C_LIMIT.toLocaleString('en-IN')} | EPF, PPF, ELSS, Life Insurance, etc.`}
               />
             </Grid>
 
@@ -565,7 +566,7 @@ export default function SalaryInputForm({ onCalculate }) {
                 InputProps={{
                   startAdornment: <InputAdornment position="start">₹</InputAdornment>,
                 }}
-                helperText="Max ₹2,00,000 | Interest paid on home loan"
+                helperText={`Max ₹${FORM_CONSTANTS.SECTION_24B_LIMIT.toLocaleString('en-IN')} | Interest paid on home loan`}
               />
             </Grid>
 

@@ -49,3 +49,28 @@ export const SURCHARGE_RATES = [
 // Senior citizen exemption limits
 export const SENIOR_CITIZEN_EXEMPTION = 300000; // Age 60-80
 export const SUPER_SENIOR_CITIZEN_EXEMPTION = 500000; // Age 80+
+
+// Form validation constants
+export const FORM_CONSTANTS = {
+    // HRA calculation percentages
+    HRA_METRO_PERCENTAGE: 0.5, // 50% for metro cities
+    HRA_NON_METRO_PERCENTAGE: 0.4, // 40% for non-metro cities
+    RENT_DEDUCTION_PERCENTAGE: 0.1, // 10% of basic salary for rent calculation
+
+    // Deduction limits
+    SECTION_80C_LIMIT: 150000,
+    SECTION_24B_LIMIT: 200000, // Home loan interest
+
+    // Provident Fund
+    EPF_EMPLOYEE_PERCENTAGE: 0.12, // 12% of basic salary
+
+    // Default values
+    DEFAULT_USD_EXCHANGE_RATE: 83.00,
+    DEFAULT_US_TAX_WITHHOLDING: 22, // 22%
+};
+
+// Currency formatting
+export const CURRENCY_CONFIG = {
+    locale: 'en-IN',
+    currency: 'INR',
+};

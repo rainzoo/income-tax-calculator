@@ -7,6 +7,7 @@ import {
     SECTION_87A_REBATE_AMOUNT,
     HEALTH_EDUCATION_CESS_RATE,
     SURCHARGE_RATES,
+    FORM_CONSTANTS,
 } from '../constants/taxRules.js';
 
 /**
@@ -29,7 +30,7 @@ export function calculateTaxBySlabs(taxableIncome, slabs) {
 
         // Calculate the portion of income that falls in this slab
         const slabUpperLimit = slab.max === Infinity ? taxableIncome : Math.min(slab.max, taxableIncome);
-        const taxableInThisSlab = slabUpperLimit - slab.min + 1;
+        const taxableInThisSlab = slabUpperLimit - slab.min;
 
         if (taxableInThisSlab > 0) {
             tax += (taxableInThisSlab * slab.rate) / 100;
@@ -68,10 +69,10 @@ export function calculateHRAExemption(
     isMetroCity
 ) {
     const exemption1 = hraReceived;
-    const exemption2 = rentPaid - (basicSalary * 0.1);
+    const exemption2 = rentPaid - (basicSalary * FORM_CONSTANTS.RENT_DEDUCTION_PERCENTAGE);
     const exemption3 = isMetroCity
-        ? basicSalary * 0.5
-        : basicSalary * 0.4;
+        ? basicSalary * FORM_CONSTANTS.HRA_METRO_PERCENTAGE
+        : basicSalary * FORM_CONSTANTS.HRA_NON_METRO_PERCENTAGE;
 
     return Math.min(exemption1, Math.max(exemption2, exemption3));
 }
@@ -167,9 +168,9 @@ export function calculateOldRegimeTaxableIncome(salaryData) {
 
     // Calculate total deductions
     const deductions =
-        Math.min(salaryData.section80C || 0, 150000) +
+        Math.min(salaryData.section80C || 0, FORM_CONSTANTS.SECTION_80C_LIMIT) +
         (salaryData.section80D || 0) +
-        Math.min(salaryData.section24B || 0, 200000) +
+        Math.min(salaryData.section24B || 0, FORM_CONSTANTS.SECTION_24B_LIMIT) +
         (salaryData.otherDeductions || 0) +
         hraExemption;
 
@@ -295,7 +296,7 @@ export function calculateMonthlyBreakdown(salaryData) {
     ) / 12;
 
     // Provident Fund (EPF) - Employee contribution is 12% of basic salary
-    const monthlyProvidentFund = (salaryData.basicSalary || 0) * 0.12 / 12;
+    const monthlyProvidentFund = (salaryData.basicSalary || 0) * FORM_CONSTANTS.EPF_EMPLOYEE_PERCENTAGE / 12;
 
     const oldRegimeResult = calculateOldRegimeTax(salaryData);
     const newRegimeResult = calculateNewRegimeTax(salaryData);
@@ -391,9 +392,9 @@ export function calculateAnnualSummary(salaryData) {
             salaryData.isMetroCity || false
         );
     }
-    oldRegimeDeductions += Math.min(salaryData.section80C || 0, 150000);
+    oldRegimeDeductions += Math.min(salaryData.section80C || 0, FORM_CONSTANTS.SECTION_80C_LIMIT);
     oldRegimeDeductions += (salaryData.section80D || 0);
-    oldRegimeDeductions += Math.min(salaryData.section24B || 0, 200000);
+    oldRegimeDeductions += Math.min(salaryData.section24B || 0, FORM_CONSTANTS.SECTION_24B_LIMIT);
     oldRegimeDeductions += (salaryData.otherDeductions || 0);
 
     const newRegimeDeductions = NEW_REGIME_STANDARD_DEDUCTION;
