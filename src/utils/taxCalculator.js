@@ -195,7 +195,7 @@ export function calculateOldRegimeTax(salaryData) {
 
     // Calculate tax on RSU income separately for DTAA credit calculation
     // This is approximate - actual calculation would need marginal tax rate on RSU portion
-    const taxOnRSUIncome = rsuDetails.netRSU > 0 
+    const taxOnRSUIncome = rsuDetails.netRSU > 0 && taxableIncome > 0
         ? (tax * (rsuDetails.netRSU / taxableIncome)) || 0
         : 0;
 
@@ -209,7 +209,9 @@ export function calculateOldRegimeTax(salaryData) {
     let totalTax = tax + surcharge + cess;
 
     // Apply DTAA credit
-    const dtaaCredit = calculateDTAACredit(rsuDetails, taxOnRSUIncome + (surcharge * (taxOnRSUIncome / tax)) + (cess * (taxOnRSUIncome / tax)));
+    const dtaaCredit = tax > 0
+        ? calculateDTAACredit(rsuDetails, taxOnRSUIncome + (surcharge * (taxOnRSUIncome / tax)) + (cess * (taxOnRSUIncome / tax)))
+        : calculateDTAACredit(rsuDetails, 0);
     totalTax = Math.max(0, totalTax - dtaaCredit);
 
     return {
@@ -240,7 +242,7 @@ export function calculateNewRegimeTax(salaryData) {
     }
 
     // Calculate tax on RSU income separately for DTAA credit calculation
-    const taxOnRSUIncome = rsuDetails.netRSU > 0 
+    const taxOnRSUIncome = rsuDetails.netRSU > 0 && taxableIncome > 0
         ? (tax * (rsuDetails.netRSU / taxableIncome)) || 0
         : 0;
 
@@ -254,7 +256,9 @@ export function calculateNewRegimeTax(salaryData) {
     let totalTax = tax + surcharge + cess;
 
     // Apply DTAA credit
-    const dtaaCredit = calculateDTAACredit(rsuDetails, taxOnRSUIncome + (surcharge * (taxOnRSUIncome / tax)) + (cess * (taxOnRSUIncome / tax)));
+    const dtaaCredit = tax > 0
+        ? calculateDTAACredit(rsuDetails, taxOnRSUIncome + (surcharge * (taxOnRSUIncome / tax)) + (cess * (taxOnRSUIncome / tax)))
+        : calculateDTAACredit(rsuDetails, 0);
     totalTax = Math.max(0, totalTax - dtaaCredit);
 
     return {
@@ -272,7 +276,6 @@ export function calculateNewRegimeTax(salaryData) {
  * Calculate monthly breakdown with detailed components
  */
 export function calculateMonthlyBreakdown(salaryData) {
-    const grossSalary = calculateGrossSalary(salaryData);
     const rsuDetails = calculateRSUDetails(salaryData);
     const rsuQuarterlyMonths = salaryData.rsuQuarterlyMonths || [];
     
@@ -428,4 +431,3 @@ export function calculateAnnualSummary(salaryData) {
         recommendedRegime: newRegimeResult.totalTax < oldRegimeResult.totalTax ? 'new' : 'old',
     };
 }
-

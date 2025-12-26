@@ -1,7 +1,12 @@
+import { Paper, Typography } from '@mui/material';
+
 export default function TaxResults({ summary }) {
   if (!summary) return null;
 
   const formatCurrency = (amount) => {
+    if (amount === null || amount === undefined || isNaN(amount)) {
+      return '₹0';
+    }
     return new Intl.NumberFormat('en-IN', {
       style: 'currency',
       currency: 'INR',
@@ -13,8 +18,10 @@ export default function TaxResults({ summary }) {
   const savings = Math.abs(summary.savings);
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Annual Tax Summary</h2>
+    <Paper elevation={3} sx={{ p: 4, mb: 4, borderRadius: 2 }}>
+      <Typography variant="h5" fontWeight="bold" gutterBottom sx={{ mb: 4 }}>
+        Annual Tax Summary
+      </Typography>
       
       {/* RSU Summary */}
       {summary.rsu && summary.rsu.grossRSU > 0 && (
@@ -188,7 +195,6 @@ export default function TaxResults({ summary }) {
             : 'Old Regime is more beneficial for you'}
         </div>
       </div>
-    </div>
+    </Paper>
   );
 }
-

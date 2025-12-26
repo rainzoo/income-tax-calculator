@@ -9,7 +9,7 @@ export default function RegimeSelector({ regime, onChange }) {
     };
 
     return (
-        <Paper elevation={2} sx={{ p: 3, mb: 3, borderRadius: 2 }}>
+        <Paper elevation={2} sx={{ p: 4, mb: 4, borderRadius: 2 }}>
             <Typography variant="h6" fontWeight="semibold" gutterBottom>
                 Select Tax Regime for Monthly Breakdown
             </Typography>
@@ -50,4 +50,3 @@ export default function RegimeSelector({ regime, onChange }) {
         </Paper>
     );
 }
-

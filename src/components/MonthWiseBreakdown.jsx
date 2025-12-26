@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import { CalendarMonth } from '@mui/icons-material';
 
-export default function MonthWiseBreakdown({ monthlyData, selectedRegime, salaryData }) {
+export default function MonthWiseBreakdown({ monthlyData, selectedRegime }) {
   if (!monthlyData || monthlyData.length === 0) return null;
 
   const formatCurrency = (amount) => {

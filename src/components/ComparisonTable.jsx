@@ -1,3 +1,5 @@
+import { Paper, Typography } from '@mui/material';
+
 export default function ComparisonTable({ summary }) {
   if (!summary) return null;
 
@@ -74,8 +76,10 @@ export default function ComparisonTable({ summary }) {
   ];
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Regime Comparison</h2>
+    <Paper elevation={3} sx={{ p: 4, mb: 4, borderRadius: 2 }}>
+      <Typography variant="h5" fontWeight="bold" gutterBottom sx={{ mb: 4 }}>
+        Regime Comparison
+      </Typography>
       
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
@@ -98,7 +102,6 @@ export default function ComparisonTable({ summary }) {
           <tbody className="bg-white divide-y divide-gray-200">
             {comparisonData.map((row, index) => {
               const isPositive = row.difference > 0;
-              const isNegative = row.difference < 0;
               const isZero = row.difference === 0;
               
               return (
@@ -167,7 +170,6 @@ export default function ComparisonTable({ summary }) {
           )}
         </ul>
       </div>
-    </div>
+    </Paper>
   );
 }
-

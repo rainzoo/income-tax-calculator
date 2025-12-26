@@ -37,7 +37,6 @@ function App() {
   const [summary, setSummary] = useState(null);
   const [monthlyData, setMonthlyData] = useState(null);
   const [selectedRegime, setSelectedRegime] = useState('old');
-  const [salaryData, setSalaryData] = useState(null);
 
   const handleCalculate = (data) => {
     const annualSummary = calculateAnnualSummary(data);
@@ -45,7 +44,6 @@ function App() {
 
     setSummary(annualSummary);
     setMonthlyData(monthlyBreakdown);
-    setSalaryData(data);
 
     // Scroll to results
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -63,24 +61,55 @@ function App() {
               <SalaryInputForm onCalculate={handleCalculate} />
             </Box>
 
-            {/* Right Column: Results */}
+            {/* Right Column: Tax Calculation Results */}
             <Box sx={{ flex: '1 1 60%' }}>
               {summary ? (
-                <>
-                  <TaxResults summary={summary} />
-                  <ComparisonTable summary={summary} />
-                  <RegimeSelector regime={selectedRegime} onChange={setSelectedRegime} />
-                  <MonthWiseBreakdown
-                    monthlyData={monthlyData}
-                    selectedRegime={selectedRegime}
-                    salaryData={salaryData}
-                  />
-                </>
+                <Box>
+                  {/* Header for Results Section */}
+                  <Paper elevation={2} sx={{ p: 3, mb: 4, borderRadius: 2, bgcolor: 'primary.main', color: 'primary.contrastText' }}>
+                    <Typography variant="h5" fontWeight="bold" textAlign="center">
+                      Tax Calculation Results
+                    </Typography>
+                    <Typography variant="body2" textAlign="center" sx={{ opacity: 0.9 }}>
+                      Comprehensive breakdown of your tax liability and savings
+                    </Typography>
+                  </Paper>
+
+                  {/* Core Tax Calculations */}
+                  <Box sx={{ mb: 4 }}>
+                    <TaxResults summary={summary} />
+                  </Box>
+
+                  {/* Analysis & Comparison Section */}
+                  <Box sx={{ mb: 4 }}>
+                    <Typography variant="h6" fontWeight="semibold" sx={{ mb: 2, color: 'text.secondary' }}>
+                      Regime Analysis & Comparison
+                    </Typography>
+                    <ComparisonTable summary={summary} />
+                  </Box>
+
+                  {/* Monthly Breakdown Section */}
+                  <Box>
+                    <Typography variant="h6" fontWeight="semibold" sx={{ mb: 2, color: 'text.secondary' }}>
+                      Monthly Salary Breakdown
+                    </Typography>
+                    <RegimeSelector regime={selectedRegime} onChange={setSelectedRegime} />
+                    <MonthWiseBreakdown
+                      monthlyData={monthlyData}
+                      selectedRegime={selectedRegime}
+                    />
+                  </Box>
+                </Box>
               ) : (
-                <Paper elevation={3} sx={{ p: 4, borderRadius: 2, textAlign: 'center', height: '100%' }}>
-                  <Typography variant="h6" color="text.secondary">
-                    Results will be displayed here
-                  </Typography>
+                <Paper elevation={3} sx={{ p: 4, borderRadius: 2, textAlign: 'center', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Box>
+                    <Typography variant="h6" color="text.secondary" gutterBottom>
+                      Tax Calculation Results
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Enter your salary details to see comprehensive tax calculations here
+                    </Typography>
+                  </Box>
                 </Paper>
               )}
             </Box>
