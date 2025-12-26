@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import {
   Box,
   Typography,
@@ -9,7 +10,7 @@ import {
 import { Receipt } from '@mui/icons-material';
 import { FORM_CONSTANTS } from '../constants/taxRules.js';
 
-export default function DeductionsSection({
+const DeductionsSection = memo(function DeductionsSection({
   formData,
   handleChange,
   getDisplayValue
@@ -103,4 +104,8 @@ export default function DeductionsSection({
       </Grid>
     </Box>
   );
-}
+});
+
+DeductionsSection.displayName = 'DeductionsSection';
+
+export default DeductionsSection;

@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import {
   Box,
   Typography,
@@ -12,7 +13,7 @@ import {
 } from '@mui/material';
 import { TrendingUp } from '@mui/icons-material';
 
-export default function RSUSection({
+const RSUSection = memo(function RSUSection({
   formData,
   handleChange,
   setFormData
@@ -140,4 +141,8 @@ export default function RSUSection({
       </Grid>
     </Box>
   );
-}
+});
+
+RSUSection.displayName = 'RSUSection';
+
+export default RSUSection;

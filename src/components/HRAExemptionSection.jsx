@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import {
   Box,
   Typography,
@@ -8,7 +9,7 @@ import {
 } from '@mui/material';
 import { Home } from '@mui/icons-material';
 
-export default function HRAExemptionSection({
+const HRAExemptionSection = memo(function HRAExemptionSection({
   formData,
   handleChange,
   getDisplayValue
@@ -60,4 +61,8 @@ export default function HRAExemptionSection({
       </Grid>
     </Box>
   );
-}
+});
+
+HRAExemptionSection.displayName = 'HRAExemptionSection';
+
+export default HRAExemptionSection;

@@ -1,3 +1,4 @@
+import { memo, useMemo } from 'react';
 import {
   Box,
   Typography,
@@ -11,7 +12,7 @@ import {
 import { AccountBalance } from '@mui/icons-material';
 import { FORM_CONSTANTS } from '../constants/taxRules.js';
 
-export default function SalaryComponentsSection({
+const SalaryComponentsSection = memo(function SalaryComponentsSection({
   formData,
   handleChange,
   getDisplayValue,
@@ -181,4 +182,8 @@ export default function SalaryComponentsSection({
       </Grid>
     </Box>
   );
-}
+});
+
+SalaryComponentsSection.displayName = 'SalaryComponentsSection';
+
+export default SalaryComponentsSection;

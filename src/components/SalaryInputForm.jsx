@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import {
   Box,
   Paper,
@@ -38,30 +39,28 @@ export default function SalaryInputForm({ onCalculate }) {
     rsuQuarterlyMonths: [],
   });
 
-  // Format number in Indian currency format
-  const formatIndianNumber = (value) => {
+  // Memoized utility functions to prevent unnecessary re-renders
+  const formatIndianNumber = useCallback((value) => {
     if (!value || value === '') return '';
     const num = value.toString().replace(/,/g, '');
     if (isNaN(num)) return value;
-
     const numStr = Number(num).toLocaleString('en-IN');
     return numStr;
-  };
+  }, []);
 
-  // Parse formatted number back to plain number
-  const parseIndianNumber = (value) => {
+  const parseIndianNumber = useCallback((value) => {
     if (!value || value === '') return '';
     return value.toString().replace(/,/g, '');
-  };
+  }, []);
 
-  const calculateHRA = (basicSalary, isMetroCity) => {
+  const calculateHRA = useCallback((basicSalary, isMetroCity) => {
     if (!basicSalary || parseFloat(basicSalary) <= 0) return '';
     const basic = parseFloat(basicSalary);
     const hraPercentage = isMetroCity ? FORM_CONSTANTS.HRA_METRO_PERCENTAGE : FORM_CONSTANTS.HRA_NON_METRO_PERCENTAGE;
     return Math.round(basic * hraPercentage).toString();
-  };
+  }, []);
 
-  const handleChange = (e) => {
+  const handleChange = useCallback((e) => {
     const { name, value, type, checked } = e.target;
 
     setFormData((prev) => {
@@ -85,25 +84,35 @@ export default function SalaryInputForm({ onCalculate }) {
 
       return newData;
     });
-  };
+  }, [parseIndianNumber, calculateHRA]);
 
-  // Get display value for input fields
-  const getDisplayValue = (name, value) => {
+  // Memoized currency fields list
+  const currencyFields = useMemo(() => [
+    'basicSalary', 'hra', 'specialAllowance', 'lta', 'medicalAllowance',
+    'otherAllowances', 'perquisites', 'rentPaid', 'section80C', 'section80D',
+    'section24B', 'otherDeductions'
+  ], []);
+
+  // Get display value for input fields - memoized
+  const getDisplayValue = useCallback((name, value) => {
     if (!value || value === '') return '';
-    // For currency fields, show formatted value
-    const currencyFields = [
-      'basicSalary', 'hra', 'specialAllowance', 'lta', 'medicalAllowance',
-      'otherAllowances', 'perquisites', 'rentPaid', 'section80C', 'section80D',
-      'section24B', 'otherDeductions'
-    ];
     if (currencyFields.includes(name)) {
       return formatIndianNumber(value);
     }
     return value;
-  };
+  }, [currencyFields, formatIndianNumber]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = useCallback((e) => {
     e.preventDefault();
+
+    // Validate form data
+    const errors = validateForm(formData);
+
+    // If there are validation errors, don't submit
+    if (hasErrors(errors)) {
+      return;
+    }
+
     const salaryData = {
       basicSalary: parseFloat(formData.basicSalary) || 0,
       hra: parseFloat(formData.hra) || 0,
@@ -127,12 +136,18 @@ export default function SalaryInputForm({ onCalculate }) {
       rsuQuarterlyMonths: formData.rsuQuarterlyMonths,
     };
     onCalculate(salaryData);
-  };
+  }, [formData, onCalculate]);
 
   return (
-    <Paper elevation={3} sx={{ p: 4, mb: 4, borderRadius: 2 }}>
+    <Paper elevation={3} sx={{ p: 4, mb: 4, borderRadius: 2 }} role="main" aria-labelledby="salary-form-title">
       <Box mb={4}>
-        <Typography variant="h4" component="h2" fontWeight="bold" gutterBottom>
+        <Typography
+          id="salary-form-title"
+          variant="h4"
+          component="h2"
+          fontWeight="bold"
+          gutterBottom
+        >
           Salary Details
         </Typography>
         <Typography variant="body2" color="text.secondary">
@@ -140,7 +155,7 @@ export default function SalaryInputForm({ onCalculate }) {
         </Typography>
       </Box>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} noValidate aria-describedby="salary-form-description">
         <SalaryComponentsSection
           formData={formData}
           handleChange={handleChange}
@@ -188,3 +203,7 @@ export default function SalaryInputForm({ onCalculate }) {
     </Paper>
   );
 }
+
+SalaryInputForm.propTypes = {
+  onCalculate: PropTypes.func.isRequired,
+};
