@@ -10,6 +10,7 @@ import {
   SURCHARGE_RATES,
   FORM_CONSTANTS,
   DEDUCTION_LIMITS,
+  TIME_CONSTANTS,
 } from '../constants/taxRules.js'
 
 describe('Tax Rules Constants', () => {
@@ -165,6 +166,24 @@ describe('Tax Rules Constants', () => {
       expect(FORM_CONSTANTS.RENT_DEDUCTION_PERCENTAGE).toBeLessThanOrEqual(1)
       expect(FORM_CONSTANTS.EPF_EMPLOYEE_PERCENTAGE).toBeGreaterThan(0)
       expect(FORM_CONSTANTS.EPF_EMPLOYEE_PERCENTAGE).toBeLessThanOrEqual(1)
+    })
+  })
+
+  describe('Time Constants', () => {
+    it('should have correct time constants', () => {
+      expect(TIME_CONSTANTS).toEqual({
+        MONTHS_IN_YEAR: 12,
+        QUARTERS_IN_YEAR: 4,
+      })
+    })
+
+    it('should have positive time values', () => {
+      expect(TIME_CONSTANTS.MONTHS_IN_YEAR).toBeGreaterThan(0)
+      expect(TIME_CONSTANTS.QUARTERS_IN_YEAR).toBeGreaterThan(0)
+    })
+
+    it('should have logical relationship between quarters and months', () => {
+      expect(TIME_CONSTANTS.MONTHS_IN_YEAR).toBe(TIME_CONSTANTS.QUARTERS_IN_YEAR * 3)
     })
   })
 

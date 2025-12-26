@@ -69,6 +69,12 @@ export const FORM_CONSTANTS = {
     DEFAULT_US_TAX_WITHHOLDING: 22, // 22%
 };
 
+// Time constants
+export const TIME_CONSTANTS = {
+    MONTHS_IN_YEAR: 12,
+    QUARTERS_IN_YEAR: 4,
+};
+
 // Currency formatting
 export const CURRENCY_CONFIG = {
     locale: 'en-IN',

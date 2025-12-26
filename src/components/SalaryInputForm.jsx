@@ -4,8 +4,10 @@ import {
   Paper,
   Typography,
   Button,
+  Alert,
 } from '@mui/material';
-import { FORM_CONSTANTS } from '../constants/taxRules.js';
+import { FORM_CONSTANTS, TIME_CONSTANTS } from '../constants/taxRules.js';
+import { validateForm, hasErrors, getFieldError } from '../utils/validation.js';
 import SalaryComponentsSection from './SalaryComponentsSection.jsx';
 import HRAExemptionSection from './HRAExemptionSection.jsx';
 import RSUSection from './RSUSection.jsx';
@@ -31,8 +33,8 @@ export default function SalaryInputForm({ onCalculate }) {
     rsuSharesPerQuarter: '',
     rsuPricePerShare: '',
     rsuCurrency: 'INR',
-    rsuExchangeRate: '83.00',
-    rsuWithholdingRate: '22',
+    rsuExchangeRate: FORM_CONSTANTS.DEFAULT_USD_EXCHANGE_RATE.toString(),
+    rsuWithholdingRate: FORM_CONSTANTS.DEFAULT_US_TAX_WITHHOLDING.toString(),
     rsuQuarterlyMonths: [],
   });
 
@@ -120,8 +122,8 @@ export default function SalaryInputForm({ onCalculate }) {
       rsuSharesPerQuarter: parseFloat(formData.rsuSharesPerQuarter) || 0,
       rsuPricePerShare: parseFloat(formData.rsuPricePerShare) || 0,
       rsuCurrency: formData.rsuCurrency,
-      rsuExchangeRate: parseFloat(formData.rsuExchangeRate) || 83.00,
-      rsuWithholdingRate: parseFloat(formData.rsuWithholdingRate) || 22,
+      rsuExchangeRate: parseFloat(formData.rsuExchangeRate) || FORM_CONSTANTS.DEFAULT_USD_EXCHANGE_RATE,
+      rsuWithholdingRate: parseFloat(formData.rsuWithholdingRate) || FORM_CONSTANTS.DEFAULT_US_TAX_WITHHOLDING,
       rsuQuarterlyMonths: formData.rsuQuarterlyMonths,
     };
     onCalculate(salaryData);

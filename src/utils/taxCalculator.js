@@ -8,6 +8,7 @@ import {
     HEALTH_EDUCATION_CESS_RATE,
     SURCHARGE_RATES,
     FORM_CONSTANTS,
+    TIME_CONSTANTS,
 } from '../constants/taxRules.js';
 
 /**
@@ -105,7 +106,7 @@ export function calculateRSUDetails(salaryData) {
     }
 
     // Annual RSU (4 quarters)
-    const grossRSU = grossRSUPerQuarter * 4;
+    const grossRSU = grossRSUPerQuarter * TIME_CONSTANTS.QUARTERS_IN_YEAR;
     const usTaxWithheld = grossRSU * withholdingRate;
     const netRSU = grossRSU - usTaxWithheld;
     const dtaaCredit = usTaxWithheld; // Can be claimed as credit
@@ -285,25 +286,25 @@ export function calculateMonthlyBreakdown(salaryData) {
     const rsuQuarterlyMonths = salaryData.rsuQuarterlyMonths || [];
     
     // Monthly salary components (excluding RSU)
-    const monthlyBasic = (salaryData.basicSalary || 0) / 12;
-    const monthlyHRA = (salaryData.hra || 0) / 12;
+    const monthlyBasic = (salaryData.basicSalary || 0) / TIME_CONSTANTS.MONTHS_IN_YEAR;
+    const monthlyHRA = (salaryData.hra || 0) / TIME_CONSTANTS.MONTHS_IN_YEAR;
     const monthlyAllowances = (
         (salaryData.specialAllowance || 0) +
         (salaryData.lta || 0) +
         (salaryData.medicalAllowance || 0) +
         (salaryData.otherAllowances || 0) +
         (salaryData.perquisites || 0)
-    ) / 12;
+    ) / TIME_CONSTANTS.MONTHS_IN_YEAR;
 
     // Provident Fund (EPF) - Employee contribution is 12% of basic salary
-    const monthlyProvidentFund = (salaryData.basicSalary || 0) * FORM_CONSTANTS.EPF_EMPLOYEE_PERCENTAGE / 12;
+    const monthlyProvidentFund = (salaryData.basicSalary || 0) * FORM_CONSTANTS.EPF_EMPLOYEE_PERCENTAGE / TIME_CONSTANTS.MONTHS_IN_YEAR;
 
     const oldRegimeResult = calculateOldRegimeTax(salaryData);
     const newRegimeResult = calculateNewRegimeTax(salaryData);
 
     // Calculate monthly tax (distributed evenly, but RSU months will have higher income)
-    const monthlyOldTax = oldRegimeResult.totalTax / 12;
-    const monthlyNewTax = newRegimeResult.totalTax / 12;
+    const monthlyOldTax = oldRegimeResult.totalTax / TIME_CONSTANTS.MONTHS_IN_YEAR;
+    const monthlyNewTax = newRegimeResult.totalTax / TIME_CONSTANTS.MONTHS_IN_YEAR;
 
     const months = [
         'April', 'May', 'June', 'July', 'August', 'September',
