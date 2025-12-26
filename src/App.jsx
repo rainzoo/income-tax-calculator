@@ -3,6 +3,7 @@ import { ThemeProvider, createTheme, CssBaseline, Container, Box, Typography, Pa
 import Header from './components/Header';
 import SalaryInputForm from './components/SalaryInputForm';
 import TaxResults from './components/TaxResults';
+import TaxChart from './components/TaxChart';
 import MonthWiseBreakdown from './components/MonthWiseBreakdown';
 import ComparisonTable from './components/ComparisonTable';
 import RegimeSelector from './components/RegimeSelector';
@@ -78,6 +79,11 @@ function App() {
                   {/* Core Tax Calculations */}
                   <Box sx={{ mb: 4 }}>
                     <TaxResults summary={summary} />
+                  </Box>
+
+                  {/* Income Distribution Chart */}
+                  <Box sx={{ mb: 4 }}>
+                    <TaxChart summary={summary} />
                   </Box>
 
                   {/* Analysis & Comparison Section */}
