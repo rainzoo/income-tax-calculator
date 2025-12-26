@@ -2,6 +2,7 @@ import {
     OLD_REGIME_SLABS,
     NEW_REGIME_SLABS,
     NEW_REGIME_STANDARD_DEDUCTION,
+    OLD_REGIME_STANDARD_DEDUCTION,
     SECTION_87A_REBATE_LIMIT,
     SECTION_87A_REBATE_AMOUNT,
     HEALTH_EDUCATION_CESS_RATE,
@@ -150,6 +151,9 @@ export function calculateGrossSalary(salaryData) {
 export function calculateOldRegimeTaxableIncome(salaryData) {
     const grossSalary = calculateGrossSalary(salaryData);
 
+    // Apply standard deduction for old regime
+    const salaryAfterStandardDeduction = Math.max(0, grossSalary - OLD_REGIME_STANDARD_DEDUCTION);
+
     // Calculate HRA exemption
     let hraExemption = 0;
     if (salaryData.hra && salaryData.rentPaid) {
@@ -169,7 +173,7 @@ export function calculateOldRegimeTaxableIncome(salaryData) {
         (salaryData.otherDeductions || 0) +
         hraExemption;
 
-    const taxableIncome = Math.max(0, grossSalary - deductions);
+    const taxableIncome = Math.max(0, salaryAfterStandardDeduction - deductions);
     return taxableIncome;
 }
 
@@ -377,8 +381,8 @@ export function calculateAnnualSummary(salaryData) {
     const oldRegimeResult = calculateOldRegimeTax(salaryData);
     const newRegimeResult = calculateNewRegimeTax(salaryData);
 
-    // Calculate deductions for old regime
-    let oldRegimeDeductions = 0;
+    // Calculate deductions for old regime (including standard deduction)
+    let oldRegimeDeductions = OLD_REGIME_STANDARD_DEDUCTION; // Standard deduction
     if (salaryData.hra && salaryData.rentPaid) {
         oldRegimeDeductions += calculateHRAExemption(
             salaryData.hra,

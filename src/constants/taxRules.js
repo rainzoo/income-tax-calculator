@@ -20,6 +20,9 @@ export const NEW_REGIME_SLABS = [
 // Standard deduction for new regime
 export const NEW_REGIME_STANDARD_DEDUCTION = 75000;
 
+// Standard deduction for old regime
+export const OLD_REGIME_STANDARD_DEDUCTION = 50000;
+
 // Section 87A rebate for new regime (taxable income up to 12L)
 export const SECTION_87A_REBATE_LIMIT = 1200000;
 export const SECTION_87A_REBATE_AMOUNT = 25000;
@@ -46,4 +49,3 @@ export const SURCHARGE_RATES = [
 // Senior citizen exemption limits
 export const SENIOR_CITIZEN_EXEMPTION = 300000; // Age 60-80
 export const SUPER_SENIOR_CITIZEN_EXEMPTION = 500000; // Age 80+
-
