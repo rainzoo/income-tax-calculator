@@ -1,4 +1,6 @@
-import { Paper, Typography } from '@mui/material';
+import { Card, CardContent, Typography, Box } from '@mui/material';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
+import TableChartIcon from '@mui/icons-material/TableChart';
 
 export default function ComparisonTable({ summary }) {
   if (!summary) return null;
@@ -76,100 +78,221 @@ export default function ComparisonTable({ summary }) {
   ];
 
   return (
-    <Paper elevation={3} sx={{ p: 4, mb: 4, borderRadius: 2 }}>
-      <Typography variant="h5" fontWeight="bold" gutterBottom sx={{ mb: 4 }}>
-        Regime Comparison
-      </Typography>
-      
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-4 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                Component
-              </th>
-              <th className="px-6 py-4 text-right text-xs font-medium text-gray-700 uppercase tracking-wider bg-red-50">
-                Old Regime
-              </th>
-              <th className="px-6 py-4 text-right text-xs font-medium text-gray-700 uppercase tracking-wider bg-blue-50">
-                New Regime
-              </th>
-              <th className="px-6 py-4 text-right text-xs font-medium text-gray-700 uppercase tracking-wider bg-green-50">
-                Difference
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {comparisonData.map((row, index) => {
-              const isPositive = row.difference > 0;
-              const isZero = row.difference === 0;
-              
-              return (
-                <tr
-                  key={index}
-                  className={`${
-                    row.isTotal
-                      ? 'bg-gray-100 font-bold'
-                      : index % 2 === 0
-                      ? 'bg-white'
-                      : 'bg-gray-50'
-                  } ${row.highlight ? 'border-l-4 border-blue-500' : ''}`}
-                >
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {row.label}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right bg-red-50">
-                    {formatCurrency(row.oldRegime)}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right bg-blue-50">
-                    {formatCurrency(row.newRegime)}
-                  </td>
-                  <td
-                    className={`px-6 py-4 whitespace-nowrap text-sm text-right font-semibold bg-green-50 ${
-                      isZero
-                        ? 'text-gray-600'
-                        : isPositive
-                        ? 'text-green-600'
-                        : 'text-red-600'
-                    }`}
-                  >
-                    {isZero
-                      ? '—'
-                      : `${isPositive ? '+' : ''}${formatCurrency(row.difference)}`}
-                    {!isZero && row.isTotal && (
-                      <span className="ml-2 text-xs">
-                        ({isNewRegimeBetter ? 'Save' : 'Pay More'})
-                      </span>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+    <Card sx={{ mb: 4 }}>
+      <CardContent sx={{ p: 4 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
+          <CompareArrowsIcon sx={{ mr: 2, color: 'primary.main', fontSize: 28 }} />
+          <Typography variant="h5" sx={{ fontWeight: 700, color: 'text.primary' }}>
+            Regime Comparison
+          </Typography>
+        </Box>
 
-      <div className="mt-6 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
-        <h3 className="font-semibold text-gray-800 mb-2">Key Insights:</h3>
-        <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
-          <li>
-            <strong>Old Regime</strong> allows multiple deductions (80C, 80D, HRA, etc.) but has lower exemption limit.
-          </li>
-          <li>
-            <strong>New Regime</strong> offers ₹75,000 standard deduction and higher exemption limit (₹4L).
-          </li>
-          <li>
-            {isNewRegimeBetter
-              ? `You save ${formatCurrency(savings)} annually with the New Regime.`
-              : `You save ${formatCurrency(savings)} annually with the Old Regime.`}
-          </li>
-          {summary.newRegime.rebate > 0 && (
-            <li>
-              <strong>Section 87A Rebate:</strong> Applied in New Regime as taxable income is below ₹12L.
-            </li>
-          )}
-        </ul>
-      </div>
-    </Paper>
+        <Box sx={{ overflowX: 'auto', mb: 4 }}>
+          <Box component="table" sx={{ minWidth: '100%', borderCollapse: 'collapse' }}>
+            <Box component="thead" sx={{ bgcolor: 'grey.50' }}>
+              <Box component="tr">
+                <Box
+                  component="th"
+                  sx={{
+                    px: 3,
+                    py: 2,
+                    textAlign: 'left',
+                    fontSize: '0.75rem',
+                    fontWeight: 600,
+                    color: 'text.secondary',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                  }}
+                >
+                  Component
+                </Box>
+                <Box
+                  component="th"
+                  sx={{
+                    px: 3,
+                    py: 2,
+                    textAlign: 'right',
+                    fontSize: '0.75rem',
+                    fontWeight: 600,
+                    color: 'text.secondary',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    bgcolor: 'error.50',
+                  }}
+                >
+                  Old Regime
+                </Box>
+                <Box
+                  component="th"
+                  sx={{
+                    px: 3,
+                    py: 2,
+                    textAlign: 'right',
+                    fontSize: '0.75rem',
+                    fontWeight: 600,
+                    color: 'text.secondary',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    bgcolor: 'info.50',
+                  }}
+                >
+                  New Regime
+                </Box>
+                <Box
+                  component="th"
+                  sx={{
+                    px: 3,
+                    py: 2,
+                    textAlign: 'right',
+                    fontSize: '0.75rem',
+                    fontWeight: 600,
+                    color: 'text.secondary',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    bgcolor: 'success.50',
+                  }}
+                >
+                  Difference
+                </Box>
+              </Box>
+            </Box>
+            <Box component="tbody" sx={{ bgcolor: 'background.paper' }}>
+              {comparisonData.map((row, index) => {
+                const isPositive = row.difference > 0;
+                const isZero = row.difference === 0;
+
+                return (
+                  <Box
+                    component="tr"
+                    key={index}
+                    sx={{
+                      bgcolor: row.isTotal
+                        ? 'grey.100'
+                        : index % 2 === 0
+                        ? 'background.paper'
+                        : 'grey.50',
+                      borderLeft: row.highlight ? 4 : 0,
+                      borderColor: 'primary.main',
+                      '&:hover': { bgcolor: 'action.hover' },
+                    }}
+                  >
+                    <Box
+                      component="td"
+                      sx={{
+                        px: 3,
+                        py: 2,
+                        fontSize: '0.875rem',
+                        fontWeight: row.isTotal ? 700 : 500,
+                        color: 'text.primary',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {row.label}
+                    </Box>
+                    <Box
+                      component="td"
+                      sx={{
+                        px: 3,
+                        py: 2,
+                        fontSize: '0.875rem',
+                        color: 'text.primary',
+                        textAlign: 'right',
+                        bgcolor: 'error.50',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {formatCurrency(row.oldRegime)}
+                    </Box>
+                    <Box
+                      component="td"
+                      sx={{
+                        px: 3,
+                        py: 2,
+                        fontSize: '0.875rem',
+                        color: 'text.primary',
+                        textAlign: 'right',
+                        bgcolor: 'info.50',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {formatCurrency(row.newRegime)}
+                    </Box>
+                    <Box
+                      component="td"
+                      sx={{
+                        px: 3,
+                        py: 2,
+                        fontSize: '0.875rem',
+                        textAlign: 'right',
+                        bgcolor: 'success.50',
+                        whiteSpace: 'nowrap',
+                        fontWeight: 600,
+                        color: isZero
+                          ? 'text.secondary'
+                          : isPositive
+                          ? 'success.main'
+                          : 'error.main',
+                      }}
+                    >
+                      {isZero
+                        ? '—'
+                        : `${isPositive ? '+' : ''}${formatCurrency(row.difference)}`}
+                      {!isZero && row.isTotal && (
+                        <Typography
+                          component="span"
+                          sx={{
+                            ml: 1,
+                            fontSize: '0.75rem',
+                            color: 'text.secondary',
+                          }}
+                        >
+                          ({isNewRegimeBetter ? 'Save' : 'Pay More'})
+                        </Typography>
+                      )}
+                    </Box>
+                  </Box>
+                );
+              })}
+            </Box>
+          </Box>
+        </Box>
+
+        <Card
+          sx={{
+            bgcolor: 'info.50',
+            border: '1px solid',
+            borderColor: 'info.main',
+            borderRadius: 2,
+          }}
+        >
+          <CardContent sx={{ p: 3 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+              <TableChartIcon sx={{ mr: 1, color: 'info.main' }} />
+              <Typography variant="h6" sx={{ fontWeight: 600, color: 'info.dark' }}>
+                Key Insights
+              </Typography>
+            </Box>
+            <Box component="ul" sx={{ pl: 2, m: 0 }}>
+              <Typography component="li" variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                <strong>Old Regime</strong> allows multiple deductions (80C, 80D, HRA, etc.) but has lower exemption limit.
+              </Typography>
+              <Typography component="li" variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                <strong>New Regime</strong> offers ₹75,000 standard deduction and higher exemption limit (₹4L).
+              </Typography>
+              <Typography component="li" variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                {isNewRegimeBetter
+                  ? `You save ${formatCurrency(savings)} annually with the New Regime.`
+                  : `You save ${formatCurrency(savings)} annually with the Old Regime.`}
+              </Typography>
+              {summary.newRegime.rebate > 0 && (
+                <Typography component="li" variant="body2" color="text.secondary">
+                  <strong>Section 87A Rebate:</strong> Applied in New Regime as taxable income is below ₹12L.
+                </Typography>
+              )}
+            </Box>
+          </CardContent>
+        </Card>
+      </CardContent>
+    </Card>
   );
 }

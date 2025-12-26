@@ -1,4 +1,7 @@
-import { Paper, Typography } from '@mui/material';
+import { Card, CardContent, Typography, Box, Chip } from '@mui/material';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import SavingsIcon from '@mui/icons-material/Savings';
 
 export default function TaxResults({ summary }) {
   if (!summary) return null;
@@ -18,183 +21,284 @@ export default function TaxResults({ summary }) {
   const savings = Math.abs(summary.savings);
 
   return (
-    <Paper elevation={3} sx={{ p: 4, mb: 4, borderRadius: 2 }}>
-      <Typography variant="h5" fontWeight="bold" gutterBottom sx={{ mb: 4 }}>
-        Annual Tax Summary
-      </Typography>
-      
-      {/* RSU Summary */}
-      {summary.rsu && summary.rsu.grossRSU > 0 && (
-        <div className="mb-6 p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded">
-          <h3 className="text-lg font-semibold text-gray-800 mb-3">RSU Income Summary</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div>
-              <p className="text-sm text-gray-600">Gross RSU Value</p>
-              <p className="text-lg font-bold">{formatCurrency(summary.rsu.grossRSU)}</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-600">US Tax Withheld</p>
-              <p className="text-lg font-bold text-red-600">{formatCurrency(summary.rsu.usTaxWithheld)}</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-600">Net RSU Received</p>
-              <p className="text-lg font-bold text-green-600">{formatCurrency(summary.rsu.netRSU)}</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-600">DTAA Credit</p>
-              <p className="text-lg font-bold text-blue-600">{formatCurrency(summary.rsu.dtaaCredit)}</p>
-            </div>
-          </div>
-          <p className="text-xs text-gray-500 mt-3">
-            DTAA credit reduces your Indian tax liability by the amount of US taxes paid on RSU income.
-          </p>
-        </div>
-      )}
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        {/* Old Regime Card */}
-        <div className={`border-2 rounded-lg p-5 ${!isNewRegimeBetter ? 'border-green-500 bg-green-50' : 'border-gray-300'}`}>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-semibold text-gray-800">Old Regime</h3>
-            {!isNewRegimeBetter && (
-              <span className="bg-green-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                Recommended
-              </span>
-            )}
-          </div>
-          <div className="space-y-3">
-            <div className="flex justify-between">
-              <span className="text-gray-600">Gross Salary:</span>
-              <span className="font-semibold">{formatCurrency(summary.grossSalary)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Deductions:</span>
-              <span className="font-semibold text-green-600">
-                -{formatCurrency(summary.oldRegime.deductions)}
-              </span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Taxable Income:</span>
-              <span className="font-semibold">{formatCurrency(summary.oldRegime.taxableIncome)}</span>
-            </div>
-            <div className="border-t pt-3 mt-3">
-              <div className="flex justify-between text-sm text-gray-500 mb-1">
-                <span>Income Tax:</span>
-                <span>{formatCurrency(summary.oldRegime.tax)}</span>
-              </div>
-              {summary.oldRegime.surcharge > 0 && (
-                <div className="flex justify-between text-sm text-gray-500 mb-1">
-                  <span>Surcharge:</span>
-                  <span>{formatCurrency(summary.oldRegime.surcharge)}</span>
-                </div>
-              )}
-              <div className="flex justify-between text-sm text-gray-500 mb-1">
-                <span>Cess (4%):</span>
-                <span>{formatCurrency(summary.oldRegime.cess)}</span>
-              </div>
-              {summary.oldRegime.dtaaCredit > 0 && (
-                <div className="flex justify-between text-sm text-blue-600 mb-2">
-                  <span>DTAA Credit (US Tax):</span>
-                  <span>-{formatCurrency(summary.oldRegime.dtaaCredit)}</span>
-                </div>
-              )}
-              <div className="flex justify-between text-lg font-bold text-gray-800 pt-2 border-t">
-                <span>Total Tax:</span>
-                <span className="text-red-600">{formatCurrency(summary.oldRegime.totalTax)}</span>
-              </div>
-            </div>
-            <div className="flex justify-between text-lg font-bold pt-3 border-t">
-              <span>Net Salary:</span>
-              <span className="text-green-600">{formatCurrency(summary.oldRegime.netSalary)}</span>
-            </div>
-          </div>
-        </div>
+    <Card sx={{ mb: 4 }}>
+      <CardContent sx={{ p: 4 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
+          <AccountBalanceWalletIcon sx={{ mr: 2, color: 'primary.main', fontSize: 28 }} />
+          <Typography variant="h5" sx={{ fontWeight: 700, color: 'text.primary' }}>
+            Annual Tax Summary
+          </Typography>
+        </Box>
 
-        {/* New Regime Card */}
-        <div className={`border-2 rounded-lg p-5 ${isNewRegimeBetter ? 'border-green-500 bg-green-50' : 'border-gray-300'}`}>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-semibold text-gray-800">New Regime</h3>
-            {isNewRegimeBetter && (
-              <span className="bg-green-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                Recommended
-              </span>
-            )}
-          </div>
-          <div className="space-y-3">
-            <div className="flex justify-between">
-              <span className="text-gray-600">Gross Salary:</span>
-              <span className="font-semibold">{formatCurrency(summary.grossSalary)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Standard Deduction:</span>
-              <span className="font-semibold text-green-600">
-                -{formatCurrency(summary.newRegime.deductions)}
-              </span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Taxable Income:</span>
-              <span className="font-semibold">{formatCurrency(summary.newRegime.taxableIncome)}</span>
-            </div>
-            <div className="border-t pt-3 mt-3">
-              <div className="flex justify-between text-sm text-gray-500 mb-1">
-                <span>Income Tax:</span>
-                <span>{formatCurrency(summary.newRegime.tax + summary.newRegime.rebate)}</span>
-              </div>
-              {summary.newRegime.rebate > 0 && (
-                <div className="flex justify-between text-sm text-green-600 mb-1">
-                  <span>Section 87A Rebate:</span>
-                  <span>-{formatCurrency(summary.newRegime.rebate)}</span>
-                </div>
-              )}
-              {summary.newRegime.surcharge > 0 && (
-                <div className="flex justify-between text-sm text-gray-500 mb-1">
-                  <span>Surcharge:</span>
-                  <span>{formatCurrency(summary.newRegime.surcharge)}</span>
-                </div>
-              )}
-              <div className="flex justify-between text-sm text-gray-500 mb-1">
-                <span>Cess (4%):</span>
-                <span>{formatCurrency(summary.newRegime.cess)}</span>
-              </div>
-              {summary.newRegime.dtaaCredit > 0 && (
-                <div className="flex justify-between text-sm text-blue-600 mb-2">
-                  <span>DTAA Credit (US Tax):</span>
-                  <span>-{formatCurrency(summary.newRegime.dtaaCredit)}</span>
-                </div>
-              )}
-              <div className="flex justify-between text-lg font-bold text-gray-800 pt-2 border-t">
-                <span>Total Tax:</span>
-                <span className="text-red-600">{formatCurrency(summary.newRegime.totalTax)}</span>
-              </div>
-            </div>
-            <div className="flex justify-between text-lg font-bold pt-3 border-t">
-              <span>Net Salary:</span>
-              <span className="text-green-600">{formatCurrency(summary.newRegime.netSalary)}</span>
-            </div>
-          </div>
-        </div>
-      </div>
+        {/* RSU Summary */}
+        {summary.rsu && summary.rsu.grossRSU > 0 && (
+          <Card
+            sx={{
+              mb: 4,
+              bgcolor: 'warning.light',
+              border: '1px solid',
+              borderColor: 'warning.main',
+              '&:hover': { boxShadow: 3 }
+            }}
+          >
+            <CardContent sx={{ p: 3 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                <TrendingUpIcon sx={{ mr: 2, color: 'warning.dark' }} />
+                <Typography variant="h6" sx={{ fontWeight: 600, color: 'warning.dark' }}>
+                  RSU Income Summary
+                </Typography>
+              </Box>
+              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr 1fr', md: '1fr 1fr 1fr 1fr' }, gap: 3, mb: 2 }}>
+                <Box>
+                  <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600 }}>
+                    Gross RSU Value
+                  </Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                    {formatCurrency(summary.rsu.grossRSU)}
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600 }}>
+                    US Tax Withheld
+                  </Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 700, color: 'error.main' }}>
+                    {formatCurrency(summary.rsu.usTaxWithheld)}
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600 }}>
+                    Net RSU Received
+                  </Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 700, color: 'success.main' }}>
+                    {formatCurrency(summary.rsu.netRSU)}
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600 }}>
+                    DTAA Credit
+                  </Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 700, color: 'info.main' }}>
+                    {formatCurrency(summary.rsu.dtaaCredit)}
+                  </Typography>
+                </Box>
+              </Box>
+              <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic' }}>
+                DTAA credit reduces your Indian tax liability by the amount of US taxes paid on RSU income.
+              </Typography>
+            </CardContent>
+          </Card>
+        )}
 
-      {/* Savings Comparison */}
-      <div className={`rounded-lg p-5 text-center ${
-        isNewRegimeBetter 
-          ? 'bg-green-100 border-2 border-green-500' 
-          : 'bg-blue-100 border-2 border-blue-500'
-      }`}>
-        <div className="text-sm text-gray-700 mb-2">
-          {isNewRegimeBetter ? 'You save' : 'You pay more'} with New Regime:
-        </div>
-        <div className={`text-3xl font-bold ${
-          isNewRegimeBetter ? 'text-green-700' : 'text-red-700'
-        }`}>
-          {isNewRegimeBetter ? '+' : '-'}{formatCurrency(savings)}
-        </div>
-        <div className="text-sm text-gray-600 mt-2">
-          {isNewRegimeBetter 
-            ? 'New Regime is more beneficial for you'
-            : 'Old Regime is more beneficial for you'}
-        </div>
-      </div>
-    </Paper>
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 3, mb: 4 }}>
+          {/* Old Regime Card */}
+          <Card
+            sx={{
+              border: 2,
+              borderColor: !isNewRegimeBetter ? 'success.main' : 'grey.300',
+              bgcolor: !isNewRegimeBetter ? 'success.50' : 'background.paper',
+              transition: 'all 0.3s ease',
+              '&:hover': { transform: 'translateY(-2px)', boxShadow: 4 }
+            }}
+          >
+            <CardContent sx={{ p: 3 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, color: 'text.primary' }}>
+                  Old Regime
+                </Typography>
+                {!isNewRegimeBetter && (
+                  <Chip
+                    label="Recommended"
+                    color="success"
+                    size="small"
+                    sx={{ fontWeight: 600 }}
+                  />
+                )}
+              </Box>
+
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Typography variant="body2" color="text.secondary">Gross Salary:</Typography>
+                  <Typography variant="body1" sx={{ fontWeight: 600 }}>{formatCurrency(summary.grossSalary)}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Typography variant="body2" color="text.secondary">Deductions:</Typography>
+                  <Typography variant="body1" sx={{ fontWeight: 600, color: 'success.main' }}>
+                    -{formatCurrency(summary.oldRegime.deductions)}
+                  </Typography>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Typography variant="body2" color="text.secondary">Taxable Income:</Typography>
+                  <Typography variant="body1" sx={{ fontWeight: 600 }}>{formatCurrency(summary.oldRegime.taxableIncome)}</Typography>
+                </Box>
+
+                <Box sx={{ borderTop: 1, borderColor: 'divider', pt: 2, mt: 1 }}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                    <Typography variant="body2" color="text.secondary">Income Tax:</Typography>
+                    <Typography variant="body2">{formatCurrency(summary.oldRegime.tax)}</Typography>
+                  </Box>
+                  {summary.oldRegime.surcharge > 0 && (
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                      <Typography variant="body2" color="text.secondary">Surcharge:</Typography>
+                      <Typography variant="body2">{formatCurrency(summary.oldRegime.surcharge)}</Typography>
+                    </Box>
+                  )}
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                    <Typography variant="body2" color="text.secondary">Cess (4%):</Typography>
+                    <Typography variant="body2">{formatCurrency(summary.oldRegime.cess)}</Typography>
+                  </Box>
+                  {summary.oldRegime.dtaaCredit > 0 && (
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+                      <Typography variant="body2" sx={{ color: 'info.main' }}>DTAA Credit:</Typography>
+                      <Typography variant="body2" sx={{ color: 'info.main' }}>
+                        -{formatCurrency(summary.oldRegime.dtaaCredit)}
+                      </Typography>
+                    </Box>
+                  )}
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', pt: 1, borderTop: 1, borderColor: 'divider' }}>
+                    <Typography variant="body1" sx={{ fontWeight: 700 }}>Total Tax:</Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 700, color: 'error.main' }}>
+                      {formatCurrency(summary.oldRegime.totalTax)}
+                    </Typography>
+                  </Box>
+                </Box>
+
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', pt: 2, borderTop: 1, borderColor: 'divider' }}>
+                  <Typography variant="h6" sx={{ fontWeight: 700 }}>Net Salary:</Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 700, color: 'success.main' }}>
+                    {formatCurrency(summary.oldRegime.netSalary)}
+                  </Typography>
+                </Box>
+              </Box>
+            </CardContent>
+          </Card>
+
+          {/* New Regime Card */}
+          <Card
+            sx={{
+              border: 2,
+              borderColor: isNewRegimeBetter ? 'success.main' : 'grey.300',
+              bgcolor: isNewRegimeBetter ? 'success.50' : 'background.paper',
+              transition: 'all 0.3s ease',
+              '&:hover': { transform: 'translateY(-2px)', boxShadow: 4 }
+            }}
+          >
+            <CardContent sx={{ p: 3 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, color: 'text.primary' }}>
+                  New Regime
+                </Typography>
+                {isNewRegimeBetter && (
+                  <Chip
+                    label="Recommended"
+                    color="success"
+                    size="small"
+                    sx={{ fontWeight: 600 }}
+                  />
+                )}
+              </Box>
+
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Typography variant="body2" color="text.secondary">Gross Salary:</Typography>
+                  <Typography variant="body1" sx={{ fontWeight: 600 }}>{formatCurrency(summary.grossSalary)}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Typography variant="body2" color="text.secondary">Standard Deduction:</Typography>
+                  <Typography variant="body1" sx={{ fontWeight: 600, color: 'success.main' }}>
+                    -{formatCurrency(summary.newRegime.deductions)}
+                  </Typography>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Typography variant="body2" color="text.secondary">Taxable Income:</Typography>
+                  <Typography variant="body1" sx={{ fontWeight: 600 }}>{formatCurrency(summary.newRegime.taxableIncome)}</Typography>
+                </Box>
+
+                <Box sx={{ borderTop: 1, borderColor: 'divider', pt: 2, mt: 1 }}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                    <Typography variant="body2" color="text.secondary">Income Tax:</Typography>
+                    <Typography variant="body2">{formatCurrency(summary.newRegime.tax + summary.newRegime.rebate)}</Typography>
+                  </Box>
+                  {summary.newRegime.rebate > 0 && (
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                      <Typography variant="body2" sx={{ color: 'success.main' }}>Section 87A Rebate:</Typography>
+                      <Typography variant="body2" sx={{ color: 'success.main' }}>
+                        -{formatCurrency(summary.newRegime.rebate)}
+                      </Typography>
+                    </Box>
+                  )}
+                  {summary.newRegime.surcharge > 0 && (
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                      <Typography variant="body2" color="text.secondary">Surcharge:</Typography>
+                      <Typography variant="body2">{formatCurrency(summary.newRegime.surcharge)}</Typography>
+                    </Box>
+                  )}
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                    <Typography variant="body2" color="text.secondary">Cess (4%):</Typography>
+                    <Typography variant="body2">{formatCurrency(summary.newRegime.cess)}</Typography>
+                  </Box>
+                  {summary.newRegime.dtaaCredit > 0 && (
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+                      <Typography variant="body2" sx={{ color: 'info.main' }}>DTAA Credit:</Typography>
+                      <Typography variant="body2" sx={{ color: 'info.main' }}>
+                        -{formatCurrency(summary.newRegime.dtaaCredit)}
+                      </Typography>
+                    </Box>
+                  )}
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', pt: 1, borderTop: 1, borderColor: 'divider' }}>
+                    <Typography variant="body1" sx={{ fontWeight: 700 }}>Total Tax:</Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 700, color: 'error.main' }}>
+                      {formatCurrency(summary.newRegime.totalTax)}
+                    </Typography>
+                  </Box>
+                </Box>
+
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', pt: 2, borderTop: 1, borderColor: 'divider' }}>
+                  <Typography variant="h6" sx={{ fontWeight: 700 }}>Net Salary:</Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 700, color: 'success.main' }}>
+                    {formatCurrency(summary.newRegime.netSalary)}
+                  </Typography>
+                </Box>
+              </Box>
+            </CardContent>
+          </Card>
+        </Box>
+
+        {/* Savings Comparison */}
+        <Card
+          sx={{
+            bgcolor: isNewRegimeBetter ? 'success.50' : 'info.50',
+            border: 2,
+            borderColor: isNewRegimeBetter ? 'success.main' : 'info.main',
+            textAlign: 'center',
+            transition: 'all 0.3s ease',
+            '&:hover': { transform: 'translateY(-1px)', boxShadow: 3 }
+          }}
+        >
+          <CardContent sx={{ p: 4 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
+              <SavingsIcon sx={{ mr: 1, color: isNewRegimeBetter ? 'success.main' : 'info.main' }} />
+              <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 600 }}>
+                {isNewRegimeBetter ? 'You save' : 'You pay more'} with New Regime:
+              </Typography>
+            </Box>
+            <Typography
+              variant="h3"
+              sx={{
+                fontWeight: 800,
+                color: isNewRegimeBetter ? 'success.main' : 'error.main',
+                mb: 2
+              }}
+            >
+              {isNewRegimeBetter ? '+' : '-'}{formatCurrency(savings)}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {isNewRegimeBetter
+                ? 'New Regime is more beneficial for you'
+                : 'Old Regime is more beneficial for you'}
+            </Typography>
+          </CardContent>
+        </Card>
+      </CardContent>
+    </Card>
   );
 }
