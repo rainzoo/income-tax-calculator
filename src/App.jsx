@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ThemeProvider, createTheme, CssBaseline, Container, Box, Typography } from '@mui/material';
+import { ThemeProvider, createTheme, CssBaseline, Container, Box, Typography, Paper } from '@mui/material';
 import Header from './components/Header';
 import SalaryInputForm from './components/SalaryInputForm';
 import TaxResults from './components/TaxResults';
@@ -57,22 +57,34 @@ function App() {
       <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
         <Header />
         <Container maxWidth="lg" sx={{ py: 4 }}>
-          {/* Results Section - Show first if calculated */}
-          {summary && (
-            <Box mb={4}>
-              <TaxResults summary={summary} />
-              <ComparisonTable summary={summary} />
-              <RegimeSelector regime={selectedRegime} onChange={setSelectedRegime} />
-              <MonthWiseBreakdown
-                monthlyData={monthlyData}
-                selectedRegime={selectedRegime}
-                salaryData={salaryData}
-              />
+          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 4 }}>
+            {/* Left Column: Input Form */}
+            <Box sx={{ flex: '1 1 40%' }}>
+              <SalaryInputForm onCalculate={handleCalculate} />
             </Box>
-          )}
 
-          {/* Input Form */}
-          <SalaryInputForm onCalculate={handleCalculate} />
+            {/* Right Column: Results */}
+            <Box sx={{ flex: '1 1 60%' }}>
+              {summary ? (
+                <>
+                  <TaxResults summary={summary} />
+                  <ComparisonTable summary={summary} />
+                  <RegimeSelector regime={selectedRegime} onChange={setSelectedRegime} />
+                  <MonthWiseBreakdown
+                    monthlyData={monthlyData}
+                    selectedRegime={selectedRegime}
+                    salaryData={salaryData}
+                  />
+                </>
+              ) : (
+                <Paper elevation={3} sx={{ p: 4, borderRadius: 2, textAlign: 'center', height: '100%' }}>
+                  <Typography variant="h6" color="text.secondary">
+                    Results will be displayed here
+                  </Typography>
+                </Paper>
+              )}
+            </Box>
+          </Box>
 
           {/* Footer */}
           <Box component="footer" mt={6} textAlign="center">
