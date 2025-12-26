@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { ThemeProvider, createTheme, CssBaseline, Container, Box, Typography, Paper } from '@mui/material';
 import Header from './components/Header';
 import SalaryInputForm from './components/SalaryInputForm';
-import TaxResults from './components/TaxResults';
 import TaxChart from './components/TaxChart';
 import MonthWiseBreakdown from './components/MonthWiseBreakdown';
 import ComparisonTable from './components/ComparisonTable';
@@ -66,11 +65,6 @@ function App() {
             <Box sx={{ flex: '1 1 60%' }}>
               {summary ? (
                 <Box>
-                  {/* Core Tax Calculations */}
-                  <Box sx={{ mb: 4 }}>
-                    <TaxResults summary={summary} />
-                  </Box>
-
                   {/* Income Distribution Chart */}
                   <Box sx={{ mb: 4 }}>
                     <TaxChart summary={summary} />
