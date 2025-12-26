@@ -77,9 +77,8 @@ describe('React Components', () => {
       // Check auto-calculate
       await user.click(autoCalculateCheckbox)
 
-      // Now the metro city checkbox should be visible (there are two, we want the one in the salary section)
-      const metroCityCheckboxes = screen.getAllByLabelText(/living in metro city/i)
-      const metroCityCheckbox = metroCityCheckboxes[0] // First one is in salary components
+      // Now the metro city checkbox should be visible in the salary components section
+      const metroCityCheckbox = screen.getByLabelText(/living in metro city/i)
 
       // Check metro city
       await user.click(metroCityCheckbox)
