@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ThemeProvider, createTheme, CssBaseline, Container, Box, Typography, Paper, Card, CardContent } from '@mui/material';
+import { ThemeProvider, createTheme, CssBaseline, Container, Box, Typography, Paper, Card, CardContent, Skeleton } from '@mui/material';
 import Header from './components/Header';
 import SalaryInputForm from './components/SalaryInputForm';
 import TaxChart from './components/TaxChart';
@@ -150,13 +150,20 @@ function App() {
   const [summary, setSummary] = useState(null);
   const [monthlyData, setMonthlyData] = useState(null);
   const [selectedRegime, setSelectedRegime] = useState('old');
+  const [isCalculating, setIsCalculating] = useState(false);
 
-  const handleCalculate = (data) => {
+  const handleCalculate = async (data) => {
+    setIsCalculating(true);
+
+    // Simulate calculation delay for better UX
+    await new Promise(resolve => setTimeout(resolve, 800));
+
     const annualSummary = calculateAnnualSummary(data);
     const monthlyBreakdown = calculateMonthlyBreakdown(data);
 
     setSummary(annualSummary);
     setMonthlyData(monthlyBreakdown);
+    setIsCalculating(false);
 
     // Scroll to results
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -176,7 +183,54 @@ function App() {
 
             {/* Right Column: Tax Calculation Results */}
             <Box sx={{ flex: '1 1 60%' }}>
-              {summary ? (
+              {isCalculating ? (
+                <Box>
+                  {/* Loading Skeleton for Chart */}
+                  <Card sx={{ mb: 4 }}>
+                    <CardContent sx={{ p: 4 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
+                        <Skeleton variant="circular" width={28} height={28} sx={{ mr: 2 }} />
+                        <Skeleton variant="text" width={200} height={32} />
+                      </Box>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, flexWrap: 'wrap' }}>
+                        <Skeleton variant="circular" width={120} height={120} />
+                        <Box sx={{ minWidth: 280 }}>
+                          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                            <Skeleton variant="rectangular" width="100%" height={80} />
+                            <Skeleton variant="rectangular" width="100%" height={80} />
+                          </Box>
+                          <Skeleton variant="rectangular" width="100%" height={100} sx={{ mt: 3 }} />
+                        </Box>
+                      </Box>
+                    </CardContent>
+                  </Card>
+
+                  {/* Loading Skeleton for Comparison Table */}
+                  <Card sx={{ mb: 4 }}>
+                    <CardContent sx={{ p: 4 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
+                        <Skeleton variant="circular" width={28} height={28} sx={{ mr: 2 }} />
+                        <Skeleton variant="text" width={180} height={32} />
+                      </Box>
+                      <Skeleton variant="rectangular" width="100%" height={300} />
+                      <Skeleton variant="rectangular" width="100%" height={120} sx={{ mt: 3 }} />
+                    </CardContent>
+                  </Card>
+
+                  {/* Loading Skeleton for Monthly Breakdown */}
+                  <Card>
+                    <CardContent sx={{ p: 4 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
+                        <Skeleton variant="circular" width={28} height={28} sx={{ mr: 2 }} />
+                        <Skeleton variant="text" width={200} height={32} />
+                        <Skeleton variant="rectangular" width={80} height={32} sx={{ ml: 'auto' }} />
+                      </Box>
+                      <Skeleton variant="rectangular" width="100%" height={400} />
+                      <Skeleton variant="rectangular" width="100%" height={150} sx={{ mt: 3 }} />
+                    </CardContent>
+                  </Card>
+                </Box>
+              ) : summary ? (
                 <Box>
                   {/* Income Distribution Chart */}
                   <Box sx={{ mb: 4 }}>

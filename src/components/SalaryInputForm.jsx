@@ -1,12 +1,14 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box,
-  Paper,
+  Card,
+  CardContent,
   Typography,
   Button,
   Alert,
 } from '@mui/material';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 import { FORM_CONSTANTS, TIME_CONSTANTS } from '../constants/taxRules.js';
 import { validateForm, hasErrors, getFieldError } from '../utils/validation.js';
 import SalaryComponentsSection from './SalaryComponentsSection.jsx';
@@ -59,6 +61,24 @@ export default function SalaryInputForm({ onCalculate }) {
     const hraPercentage = isMetroCity ? FORM_CONSTANTS.HRA_METRO_PERCENTAGE : FORM_CONSTANTS.HRA_NON_METRO_PERCENTAGE;
     return Math.round(basic * hraPercentage).toString();
   }, []);
+
+  // Load data from localStorage on component mount
+  useEffect(() => {
+    const savedData = localStorage.getItem('salaryFormData');
+    if (savedData) {
+      try {
+        const parsedData = JSON.parse(savedData);
+        setFormData(parsedData);
+      } catch (error) {
+        console.warn('Failed to load saved form data:', error);
+      }
+    }
+  }, []);
+
+  // Save data to localStorage whenever formData changes
+  useEffect(() => {
+    localStorage.setItem('salaryFormData', JSON.stringify(formData));
+  }, [formData]);
 
   const handleChange = useCallback((e) => {
     const { name, value, type, checked } = e.target;
@@ -139,21 +159,25 @@ export default function SalaryInputForm({ onCalculate }) {
   }, [formData, onCalculate]);
 
   return (
-    <Paper elevation={3} sx={{ p: 4, mb: 4, borderRadius: 2 }} role="main" aria-labelledby="salary-form-title">
-      <Box mb={4}>
-        <Typography
-          id="salary-form-title"
-          variant="h4"
-          component="h2"
-          fontWeight="bold"
-          gutterBottom
-        >
-          Salary Details
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Enter your annual salary components and deductions
-        </Typography>
-      </Box>
+    <Card sx={{ mb: 4 }} role="main" aria-labelledby="salary-form-title">
+      <CardContent sx={{ p: 4 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
+          <AssignmentIcon sx={{ mr: 2, color: 'primary.main', fontSize: 28 }} />
+          <Box>
+            <Typography
+              id="salary-form-title"
+              variant="h4"
+              component="h2"
+              sx={{ fontWeight: 700, color: 'text.primary' }}
+              gutterBottom
+            >
+              Salary Details
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Enter your annual salary components and deductions
+            </Typography>
+          </Box>
+        </Box>
 
       <form onSubmit={handleSubmit} noValidate aria-describedby="salary-form-description">
         <SalaryComponentsSection
@@ -200,7 +224,8 @@ export default function SalaryInputForm({ onCalculate }) {
           </Button>
         </Box>
       </form>
-    </Paper>
+      </CardContent>
+    </Card>
   );
 }
 

@@ -1,5 +1,6 @@
 import {
-  Paper,
+  Card,
+  CardContent,
   Typography,
   Table,
   TableBody,
@@ -27,21 +28,22 @@ export default function MonthWiseBreakdown({ monthlyData, selectedRegime }) {
   const lastMonth = monthlyData[monthlyData.length - 1];
 
   return (
-    <Paper elevation={3} sx={{ p: 4, mb: 4, borderRadius: 2 }}>
-      <Box display="flex" alignItems="center" mb={3}>
-        <CalendarMonth sx={{ mr: 2, color: 'primary.main', fontSize: 32 }} />
-        <Box>
-          <Typography variant="h5" component="h2" fontWeight="bold">
-            Month-wise Breakdown
-          </Typography>
-          <Chip
-            label={isOldRegime ? 'Old Regime' : 'New Regime'}
-            color={isOldRegime ? 'error' : 'primary'}
-            size="small"
-            sx={{ mt: 1 }}
-          />
+    <Card sx={{ mb: 4 }}>
+      <CardContent sx={{ p: 4 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
+          <CalendarMonth sx={{ mr: 2, color: 'primary.main', fontSize: 28 }} />
+          <Box>
+            <Typography variant="h5" component="h2" sx={{ fontWeight: 700, color: 'text.primary' }}>
+              Month-wise Breakdown
+            </Typography>
+            <Chip
+              label={isOldRegime ? 'Old Regime' : 'New Regime'}
+              color={isOldRegime ? 'error' : 'primary'}
+              size="small"
+              sx={{ mt: 1, fontWeight: 600 }}
+            />
+          </Box>
         </Box>
-      </Box>
 
       <TableContainer sx={{ maxHeight: 600 }}>
         <Table stickyHeader>
@@ -206,6 +208,7 @@ export default function MonthWiseBreakdown({ monthlyData, selectedRegime }) {
           Provident Fund is calculated as 12% of basic salary (employee contribution).
         </Typography>
       </Box>
-    </Paper>
+      </CardContent>
+    </Card>
   );
 }
