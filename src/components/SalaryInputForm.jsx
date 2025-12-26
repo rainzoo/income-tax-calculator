@@ -47,6 +47,22 @@ export default function SalaryInputForm({ onCalculate }) {
     rsuQuarterlyMonths: [],
   });
 
+  // Format number in Indian currency format
+  const formatIndianNumber = (value) => {
+    if (!value || value === '') return '';
+    const num = value.toString().replace(/,/g, '');
+    if (isNaN(num)) return value;
+
+    const numStr = Number(num).toLocaleString('en-IN');
+    return numStr;
+  };
+
+  // Parse formatted number back to plain number
+  const parseIndianNumber = (value) => {
+    if (!value || value === '') return '';
+    return value.toString().replace(/,/g, '');
+  };
+
   const calculateHRA = (basicSalary, isMetroCity) => {
     if (!basicSalary || parseFloat(basicSalary) <= 0) return '';
     const basic = parseFloat(basicSalary);
@@ -58,20 +74,41 @@ export default function SalaryInputForm({ onCalculate }) {
     const { name, value, type, checked } = e.target;
 
     setFormData((prev) => {
-      const newData = {
-        ...prev,
-        [name]: type === 'checkbox' ? checked : value,
-      };
+      const newData = { ...prev };
 
-      // Auto-calculate HRA if enabled
-      if (newData.autoCalculateHRA) {
-        if (name === 'basicSalary' || name === 'isMetroCity' || name === 'autoCalculateHRA') {
-          newData.hra = calculateHRA(newData.basicSalary, newData.isMetroCity);
-        }
+      if (type === 'checkbox') {
+        newData[name] = checked;
+      } else {
+        // For number inputs, store raw number but display formatted
+        const rawValue = parseIndianNumber(value);
+        newData[name] = rawValue;
+      }
+
+      // Auto-calculate HRA if enabled and we have basic salary
+      if (newData.autoCalculateHRA && newData.basicSalary) {
+        newData.hra = calculateHRA(newData.basicSalary, newData.isMetroCity);
+      } else if (!newData.autoCalculateHRA) {
+        // Clear HRA if auto-calculation is disabled
+        newData.hra = '';
       }
 
       return newData;
     });
+  };
+
+  // Get display value for input fields
+  const getDisplayValue = (name, value) => {
+    if (!value || value === '') return '';
+    // For currency fields, show formatted value
+    const currencyFields = [
+      'basicSalary', 'hra', 'specialAllowance', 'lta', 'medicalAllowance',
+      'otherAllowances', 'perquisites', 'rentPaid', 'section80C', 'section80D',
+      'section24B', 'otherDeductions'
+    ];
+    if (currencyFields.includes(name)) {
+      return formatIndianNumber(value);
+    }
+    return value;
   };
 
   const handleSubmit = (e) => {
@@ -144,9 +181,9 @@ export default function SalaryInputForm({ onCalculate }) {
                 required
                 label="Basic Salary (Annual)"
                 name="basicSalary"
-                value={formData.basicSalary}
+                value={getDisplayValue('basicSalary', formData.basicSalary)}
                 onChange={handleChange}
-                type="number"
+                type="text"
                 InputProps={{
                   startAdornment: <InputAdornment position="start">₹</InputAdornment>,
                 }}
@@ -160,9 +197,9 @@ export default function SalaryInputForm({ onCalculate }) {
                 fullWidth
                 label="House Rent Allowance (HRA)"
                 name="hra"
-                value={formData.hra}
+                value={getDisplayValue('hra', formData.hra)}
                 onChange={handleChange}
-                type="number"
+                type="text"
                 disabled={formData.autoCalculateHRA}
                 InputProps={{
                   startAdornment: <InputAdornment position="start">₹</InputAdornment>,
@@ -209,9 +246,9 @@ export default function SalaryInputForm({ onCalculate }) {
                 fullWidth
                 label="Special Allowance"
                 name="specialAllowance"
-                value={formData.specialAllowance}
+                value={getDisplayValue('specialAllowance', formData.specialAllowance)}
                 onChange={handleChange}
-                type="number"
+                type="text"
                 InputProps={{
                   startAdornment: <InputAdornment position="start">₹</InputAdornment>,
                 }}
@@ -223,9 +260,9 @@ export default function SalaryInputForm({ onCalculate }) {
                 fullWidth
                 label="Leave Travel Allowance (LTA)"
                 name="lta"
-                value={formData.lta}
+                value={getDisplayValue('lta', formData.lta)}
                 onChange={handleChange}
-                type="number"
+                type="text"
                 InputProps={{
                   startAdornment: <InputAdornment position="start">₹</InputAdornment>,
                 }}
@@ -237,9 +274,9 @@ export default function SalaryInputForm({ onCalculate }) {
                 fullWidth
                 label="Medical Allowance"
                 name="medicalAllowance"
-                value={formData.medicalAllowance}
+                value={getDisplayValue('medicalAllowance', formData.medicalAllowance)}
                 onChange={handleChange}
-                type="number"
+                type="text"
                 InputProps={{
                   startAdornment: <InputAdornment position="start">₹</InputAdornment>,
                 }}
@@ -251,9 +288,9 @@ export default function SalaryInputForm({ onCalculate }) {
                 fullWidth
                 label="Other Allowances"
                 name="otherAllowances"
-                value={formData.otherAllowances}
+                value={getDisplayValue('otherAllowances', formData.otherAllowances)}
                 onChange={handleChange}
-                type="number"
+                type="text"
                 InputProps={{
                   startAdornment: <InputAdornment position="start">₹</InputAdornment>,
                 }}
@@ -265,9 +302,9 @@ export default function SalaryInputForm({ onCalculate }) {
                 fullWidth
                 label="Perquisites"
                 name="perquisites"
-                value={formData.perquisites}
+                value={getDisplayValue('perquisites', formData.perquisites)}
                 onChange={handleChange}
-                type="number"
+                type="text"
                 InputProps={{
                   startAdornment: <InputAdornment position="start">₹</InputAdornment>,
                 }}
@@ -308,9 +345,9 @@ export default function SalaryInputForm({ onCalculate }) {
                   fullWidth
                   label="Annual Rent Paid"
                   name="rentPaid"
-                  value={formData.rentPaid}
+                  value={getDisplayValue('rentPaid', formData.rentPaid)}
                   onChange={handleChange}
-                  type="number"
+                  type="text"
                   InputProps={{
                     startAdornment: <InputAdornment position="start">₹</InputAdornment>,
                   }}
@@ -490,9 +527,9 @@ export default function SalaryInputForm({ onCalculate }) {
                 fullWidth
                 label="Section 80C Deductions"
                 name="section80C"
-                value={formData.section80C}
+                value={getDisplayValue('section80C', formData.section80C)}
                 onChange={handleChange}
-                type="number"
+                type="text"
                 inputProps={{ max: 150000 }}
                 InputProps={{
                   startAdornment: <InputAdornment position="start">₹</InputAdornment>,
@@ -506,9 +543,9 @@ export default function SalaryInputForm({ onCalculate }) {
                 fullWidth
                 label="Section 80D - Health Insurance"
                 name="section80D"
-                value={formData.section80D}
+                value={getDisplayValue('section80D', formData.section80D)}
                 onChange={handleChange}
-                type="number"
+                type="text"
                 InputProps={{
                   startAdornment: <InputAdornment position="start">₹</InputAdornment>,
                 }}
@@ -521,9 +558,9 @@ export default function SalaryInputForm({ onCalculate }) {
                 fullWidth
                 label="Section 24(b) - Home Loan Interest"
                 name="section24B"
-                value={formData.section24B}
+                value={getDisplayValue('section24B', formData.section24B)}
                 onChange={handleChange}
-                type="number"
+                type="text"
                 inputProps={{ max: 200000 }}
                 InputProps={{
                   startAdornment: <InputAdornment position="start">₹</InputAdornment>,
@@ -537,9 +574,9 @@ export default function SalaryInputForm({ onCalculate }) {
                 fullWidth
                 label="Other Deductions"
                 name="otherDeductions"
-                value={formData.otherDeductions}
+                value={getDisplayValue('otherDeductions', formData.otherDeductions)}
                 onChange={handleChange}
-                type="number"
+                type="text"
                 InputProps={{
                   startAdornment: <InputAdornment position="start">₹</InputAdornment>,
                 }}

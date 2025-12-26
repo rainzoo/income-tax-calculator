@@ -66,16 +66,6 @@ function App() {
             <Box sx={{ flex: '1 1 60%' }}>
               {summary ? (
                 <Box>
-                  {/* Header for Results Section */}
-                  <Paper elevation={2} sx={{ p: 3, mb: 4, borderRadius: 2, bgcolor: 'primary.main', color: 'primary.contrastText' }}>
-                    <Typography variant="h5" fontWeight="bold" textAlign="center">
-                      Tax Calculation Results
-                    </Typography>
-                    <Typography variant="body2" textAlign="center" sx={{ opacity: 0.9 }}>
-                      Comprehensive breakdown of your tax liability and savings
-                    </Typography>
-                  </Paper>
-
                   {/* Core Tax Calculations */}
                   <Box sx={{ mb: 4 }}>
                     <TaxResults summary={summary} />
