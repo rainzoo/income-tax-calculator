@@ -1,10 +1,8 @@
 import { describe, it, expect, vi } from 'vitest'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ThemeProvider, createTheme } from '@mui/material'
 import SalaryInputForm from '../components/SalaryInputForm.jsx'
-import TaxResults from '../components/TaxResults.jsx'
-import TaxChart from '../components/TaxChart.jsx'
 import ComparisonTable from '../components/ComparisonTable.jsx'
 
 // Create theme for MUI components

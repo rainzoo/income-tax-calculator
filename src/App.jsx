@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ThemeProvider, createTheme, CssBaseline, Container, Box, Typography, Paper, Card, CardContent, Skeleton } from '@mui/material';
+import { ThemeProvider, createTheme, CssBaseline, Container, Box, Typography, Card, CardContent, Skeleton } from '@mui/material';
 import Header from './components/Header';
 import SalaryInputForm from './components/SalaryInputForm';
 import TaxChart from './components/TaxChart';

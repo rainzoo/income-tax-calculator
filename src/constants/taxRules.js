@@ -47,8 +47,8 @@ export const SURCHARGE_RATES = [
 ];
 
 // Senior citizen exemption limits
-export const SENIOR_CITIZEN_EXEMPTION = 300000; // Age 60-80
-export const SUPER_SENIOR_CITIZEN_EXEMPTION = 500000; // Age 80+
+const SENIOR_CITIZEN_EXEMPTION = 300000; // Age 60-80
+const SUPER_SENIOR_CITIZEN_EXEMPTION = 500000; // Age 80+
 
 // Form validation constants
 export const FORM_CONSTANTS = {
@@ -76,7 +76,7 @@ export const TIME_CONSTANTS = {
 };
 
 // Currency formatting
-export const CURRENCY_CONFIG = {
+const CURRENCY_CONFIG = {
     locale: 'en-IN',
     currency: 'INR',
 };

@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { memo } from 'react';
 import {
   Box,
   Typography,
@@ -10,7 +10,6 @@ import {
   InputAdornment,
 } from '@mui/material';
 import { AccountBalance } from '@mui/icons-material';
-import { FORM_CONSTANTS } from '../constants/taxRules.js';
 
 const SalaryComponentsSection = memo(function SalaryComponentsSection({
   formData,

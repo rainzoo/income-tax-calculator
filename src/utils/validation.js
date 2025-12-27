@@ -4,7 +4,7 @@ import { FORM_CONSTANTS } from '../constants/taxRules.js';
  * Validation utility functions for form inputs
  */
 
-export const VALIDATION_RULES = {
+const VALIDATION_RULES = {
   required: (value) => {
     if (!value || value.toString().trim() === '') {
       return 'This field is required';
@@ -118,7 +118,7 @@ export const VALIDATION_RULES = {
 /**
  * Validate a single field with multiple rules
  */
-export const validateField = (value, rules) => {
+const validateField = (value, rules) => {
   for (const rule of rules) {
     const error = rule(value);
     if (error) {
@@ -268,6 +268,6 @@ export const hasErrors = (errors) => {
 /**
  * Get error message for a specific field
  */
-export const getFieldError = (errors, fieldName) => {
+const getFieldError = (errors, fieldName) => {
   return errors[fieldName] || null;
 };

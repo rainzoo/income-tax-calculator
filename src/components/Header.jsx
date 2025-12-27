@@ -1,6 +1,5 @@
 import { AppBar, Toolbar, Typography, Container, Box } from '@mui/material';
 import CalculateIcon from '@mui/icons-material/Calculate';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 
 export default function Header() {
   return (

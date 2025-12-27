@@ -44,7 +44,7 @@ export function calculateTaxBySlabs(taxableIncome, slabs) {
 /**
  * Calculate surcharge based on total income
  */
-export function calculateSurcharge(totalIncome, taxBeforeSurcharge) {
+function calculateSurcharge(totalIncome, taxBeforeSurcharge) {
     for (const surchargeRate of SURCHARGE_RATES) {
         if (totalIncome >= surchargeRate.min && totalIncome <= surchargeRate.max) {
             return Math.round((taxBeforeSurcharge * surchargeRate.rate) / 100);
@@ -56,7 +56,7 @@ export function calculateSurcharge(totalIncome, taxBeforeSurcharge) {
 /**
  * Calculate Health and Education Cess
  */
-export function calculateCess(taxIncludingSurcharge) {
+function calculateCess(taxIncludingSurcharge) {
     return Math.round((taxIncludingSurcharge * HEALTH_EDUCATION_CESS_RATE) / 100);
 }
 
@@ -125,7 +125,7 @@ export function calculateRSUDetails(salaryData) {
 /**
  * Calculate DTAA credit (limited to Indian tax on RSU income)
  */
-export function calculateDTAACredit(rsuDetails, indianTaxOnRSUIncome) {
+function calculateDTAACredit(rsuDetails, indianTaxOnRSUIncome) {
     // DTAA credit is limited to the Indian tax payable on that income
     return Math.min(rsuDetails.dtaaCredit, indianTaxOnRSUIncome);
 }
