@@ -1,0 +1,8 @@
+~/workspace/income-tax/src/components/SalaryComponentsSection.jsx
+Warning:(53, 13) The attribute is marked as deprecated
+Warning:(70, 13) The attribute is marked as deprecated
+Warning:(118, 13) The attribute is marked as deprecated
+Warning:(132, 13) The attribute is marked as deprecated
+Warning:(146, 13) The attribute is marked as deprecated
+Warning:(160, 13) The attribute is marked as deprecated
+Warning:(174, 13) The attribute is marked as deprecated
