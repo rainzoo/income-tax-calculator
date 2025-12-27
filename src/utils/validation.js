@@ -264,10 +264,3 @@ export const validateForm = (formData) => {
 export const hasErrors = (errors) => {
   return Object.keys(errors).length > 0;
 };
-
-/**
- * Get error message for a specific field
- */
-const getFieldError = (errors, fieldName) => {
-  return errors[fieldName] || null;
-};

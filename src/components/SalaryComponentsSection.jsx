@@ -14,8 +14,7 @@ import { AccountBalance } from '@mui/icons-material';
 const SalaryComponentsSection = memo(function SalaryComponentsSection({
   formData,
   handleChange,
-  getDisplayValue,
-  calculateHRA
+  getDisplayValue
 }) {
   return (
     <Box
@@ -42,7 +41,7 @@ const SalaryComponentsSection = memo(function SalaryComponentsSection({
       <Divider sx={{ mb: 3 }} />
 
       <Grid container spacing={3}>
-        <Grid size={12}>
+        <Grid xs={12}>
           <TextField
             fullWidth
             required
@@ -59,7 +58,7 @@ const SalaryComponentsSection = memo(function SalaryComponentsSection({
           />
         </Grid>
 
-        <Grid size={12}>
+        <Grid xs={12}>
           <TextField
             fullWidth
             label="House Rent Allowance (HRA)"
@@ -79,7 +78,7 @@ const SalaryComponentsSection = memo(function SalaryComponentsSection({
           />
         </Grid>
 
-        <Grid size={12}>
+        <Grid xs={12}>
           <Box display="flex" flexDirection="row" gap={2} alignItems="center" sx={{ mt: 1, mb: 2 }}>
             <FormControlLabel
               control={
@@ -108,7 +107,7 @@ const SalaryComponentsSection = memo(function SalaryComponentsSection({
           </Box>
         </Grid>
 
-        <Grid size={12}>
+        <Grid xs={12}>
           <TextField
             fullWidth
             label="Special Allowance"
@@ -122,7 +121,7 @@ const SalaryComponentsSection = memo(function SalaryComponentsSection({
           />
         </Grid>
 
-        <Grid size={12}>
+        <Grid xs={12}>
           <TextField
             fullWidth
             label="Leave Travel Allowance (LTA)"
@@ -136,7 +135,7 @@ const SalaryComponentsSection = memo(function SalaryComponentsSection({
           />
         </Grid>
 
-        <Grid size={12}>
+        <Grid xs={12}>
           <TextField
             fullWidth
             label="Medical Allowance"
@@ -150,7 +149,7 @@ const SalaryComponentsSection = memo(function SalaryComponentsSection({
           />
         </Grid>
 
-        <Grid size={12}>
+        <Grid xs={12}>
           <TextField
             fullWidth
             label="Other Allowances"
@@ -164,7 +163,7 @@ const SalaryComponentsSection = memo(function SalaryComponentsSection({
           />
         </Grid>
 
-        <Grid size={12}>
+        <Grid xs={12}>
           <TextField
             fullWidth
             label="Perquisites"

@@ -109,13 +109,12 @@ export function calculateRSUDetails(salaryData) {
     const grossRSU = grossRSUPerQuarter * TIME_CONSTANTS.QUARTERS_IN_YEAR;
     const usTaxWithheld = grossRSU * withholdingRate;
     const netRSU = grossRSU - usTaxWithheld;
-    const dtaaCredit = usTaxWithheld; // Can be claimed as credit
 
     return {
         grossRSU: Math.round(grossRSU),
         usTaxWithheld: Math.round(usTaxWithheld),
         netRSU: Math.round(netRSU),
-        dtaaCredit: Math.round(dtaaCredit),
+        dtaaCredit: Math.round(usTaxWithheld), // Can be claimed as credit
         grossRSUPerQuarter: Math.round(grossRSUPerQuarter),
         usTaxWithheldPerQuarter: Math.round(grossRSUPerQuarter * withholdingRate),
         netRSUPerQuarter: Math.round(grossRSUPerQuarter * (1 - withholdingRate)),
@@ -175,8 +174,7 @@ export function calculateOldRegimeTaxableIncome(salaryData) {
         (salaryData.otherDeductions || 0) +
         hraExemption;
 
-    const taxableIncome = Math.max(0, salaryAfterStandardDeduction - deductions);
-    return taxableIncome;
+    return Math.max(0, salaryAfterStandardDeduction - deductions);
 }
 
 /**
@@ -184,8 +182,7 @@ export function calculateOldRegimeTaxableIncome(salaryData) {
  */
 export function calculateNewRegimeTaxableIncome(salaryData) {
     const grossSalary = calculateGrossSalary(salaryData);
-    const taxableIncome = Math.max(0, grossSalary - NEW_REGIME_STANDARD_DEDUCTION);
-    return taxableIncome;
+    return Math.max(0, grossSalary - NEW_REGIME_STANDARD_DEDUCTION);
 }
 
 /**

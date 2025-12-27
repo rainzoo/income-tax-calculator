@@ -46,10 +46,6 @@ export const SURCHARGE_RATES = [
     { min: 50000001, max: Infinity, rate: 37 },
 ];
 
-// Senior citizen exemption limits
-const SENIOR_CITIZEN_EXEMPTION = 300000; // Age 60-80
-const SUPER_SENIOR_CITIZEN_EXEMPTION = 500000; // Age 80+
-
 // Form validation constants
 export const FORM_CONSTANTS = {
     // HRA calculation percentages
@@ -73,10 +69,4 @@ export const FORM_CONSTANTS = {
 export const TIME_CONSTANTS = {
     MONTHS_IN_YEAR: 12,
     QUARTERS_IN_YEAR: 4,
-};
-
-// Currency formatting
-const CURRENCY_CONFIG = {
-    locale: 'en-IN',
-    currency: 'INR',
 };

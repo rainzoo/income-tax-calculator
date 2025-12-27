@@ -16,29 +16,41 @@ import HRAExemptionSection from './HRAExemptionSection.jsx';
 import RSUSection from './RSUSection.jsx';
 import DeductionsSection from './DeductionsSection.jsx';
 
+const INITIAL_FORM_STATE = {
+  basicSalary: '',
+  hra: '',
+  specialAllowance: '',
+  lta: '',
+  medicalAllowance: '',
+  otherAllowances: '',
+  perquisites: '',
+  rentPaid: '',
+  isMetroCity: false,
+  autoCalculateHRA: false,
+  section80C: '',
+  section80D: '',
+  section24B: '',
+  otherDeductions: '',
+  // RSU fields
+  rsuSharesPerQuarter: '',
+  rsuPricePerShare: '',
+  rsuCurrency: 'INR',
+  rsuExchangeRate: FORM_CONSTANTS.DEFAULT_USD_EXCHANGE_RATE.toString(),
+  rsuWithholdingRate: FORM_CONSTANTS.DEFAULT_US_TAX_WITHHOLDING.toString(),
+  rsuQuarterlyMonths: [],
+};
+
 export default function SalaryInputForm({ onCalculate }) {
-  const [formData, setFormData] = useState({
-    basicSalary: '',
-    hra: '',
-    specialAllowance: '',
-    lta: '',
-    medicalAllowance: '',
-    otherAllowances: '',
-    perquisites: '',
-    rentPaid: '',
-    isMetroCity: false,
-    autoCalculateHRA: false,
-    section80C: '',
-    section80D: '',
-    section24B: '',
-    otherDeductions: '',
-    // RSU fields
-    rsuSharesPerQuarter: '',
-    rsuPricePerShare: '',
-    rsuCurrency: 'INR',
-    rsuExchangeRate: FORM_CONSTANTS.DEFAULT_USD_EXCHANGE_RATE.toString(),
-    rsuWithholdingRate: FORM_CONSTANTS.DEFAULT_US_TAX_WITHHOLDING.toString(),
-    rsuQuarterlyMonths: [],
+  const [formData, setFormData] = useState(() => {
+    const savedData = localStorage.getItem('salaryFormData');
+    if (savedData) {
+      try {
+        return JSON.parse(savedData);
+      } catch (error) {
+        console.warn('Failed to load saved form data:', error);
+      }
+    }
+    return INITIAL_FORM_STATE;
   });
 
   // Memoized utility functions to prevent unnecessary re-renders
@@ -46,8 +58,7 @@ export default function SalaryInputForm({ onCalculate }) {
     if (!value || value === '') return '';
     const num = value.toString().replace(/,/g, '');
     if (isNaN(num)) return value;
-    const numStr = Number(num).toLocaleString('en-IN');
-    return numStr;
+    return Number(num).toLocaleString('en-IN');
   }, []);
 
   const parseIndianNumber = useCallback((value) => {
@@ -60,19 +71,6 @@ export default function SalaryInputForm({ onCalculate }) {
     const basic = parseFloat(basicSalary);
     const hraPercentage = isMetroCity ? FORM_CONSTANTS.HRA_METRO_PERCENTAGE : FORM_CONSTANTS.HRA_NON_METRO_PERCENTAGE;
     return Math.round(basic * hraPercentage).toString();
-  }, []);
-
-  // Load data from localStorage on component mount
-  useEffect(() => {
-    const savedData = localStorage.getItem('salaryFormData');
-    if (savedData) {
-      try {
-        const parsedData = JSON.parse(savedData);
-        setFormData(parsedData);
-      } catch (error) {
-        console.warn('Failed to load saved form data:', error);
-      }
-    }
   }, []);
 
   // Save data to localStorage whenever formData changes
@@ -90,8 +88,7 @@ export default function SalaryInputForm({ onCalculate }) {
         newData[name] = checked;
       } else {
         // For number inputs, store raw number but display formatted
-        const rawValue = parseIndianNumber(value);
-        newData[name] = rawValue;
+        newData[name] = parseIndianNumber(value);
       }
 
       // Auto-calculate HRA if enabled and we have basic salary
@@ -184,7 +181,6 @@ export default function SalaryInputForm({ onCalculate }) {
           formData={formData}
           handleChange={handleChange}
           getDisplayValue={getDisplayValue}
-          calculateHRA={calculateHRA}
         />
 
         <HRAExemptionSection
