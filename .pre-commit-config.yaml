@@ -24,7 +24,7 @@ repos:
     rev: v2.3.0
     hooks:
       - id: codespell
-        args: ["--skip", "*.lock"]
+        args: ["--skip=*.lock,package.json,package-lock.json"]
 
   # 4. GitHub Actions / Schema Validation
   - repo: https://github.com/python-jsonschema/check-jsonschema
@@ -37,8 +37,11 @@ repos:
     rev: v0.1.0
     hooks:
       - id: biome-check
-        additional_dependencies: ["@biomejs/biome@latest"]
-        args: ["--write"]
+        name: biome-check
+        entry: npx biome check --write
+        language: node
+        pass_filenames: false
+        always_run: true
 
   - repo: local
     hooks:

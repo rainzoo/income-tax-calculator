@@ -19,6 +19,8 @@ describe("React Components", () => {
 
 		beforeEach(() => {
 			mockOnCalculate.mockClear();
+			// Ensure no persisted form state leaks between tests
+			localStorage.clear();
 		});
 
 		it("should render all form fields", () => {
