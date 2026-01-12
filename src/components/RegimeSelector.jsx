@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 
 export default function RegimeSelector({ regime, onChange }) {
-	const handleChange = (event, newRegime) => {
+	const handleChange = (_event, newRegime) => {
 		if (newRegime !== null) {
 			onChange(newRegime);
 		}

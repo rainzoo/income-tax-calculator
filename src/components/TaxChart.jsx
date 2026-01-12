@@ -58,6 +58,7 @@ export default function TaxChart({ summary }) {
 							height={size}
 							style={{ filter: "drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1))" }}
 						>
+							<title>Income Distribution Pie Chart</title>
 							{/* Background circle with gradient */}
 							<defs>
 								<linearGradient

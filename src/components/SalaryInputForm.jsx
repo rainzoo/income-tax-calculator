@@ -50,7 +50,7 @@ export default function SalaryInputForm({ onCalculate }) {
 	const formatIndianNumber = useCallback((value) => {
 		if (!value || value === "") return "";
 		const num = value.toString().replace(/,/g, "");
-		if (isNaN(num)) return value;
+		if (Number.isNaN(num)) return value;
 		return Number(num).toLocaleString("en-IN");
 	}, []);
 

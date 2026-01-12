@@ -126,9 +126,9 @@ export default function MonthWiseBreakdown({ monthlyData, selectedRegime }) {
 							</TableRow>
 						</TableHead>
 						<TableBody>
-							{monthlyData.map((month, index) => (
+							{monthlyData.map((month) => (
 								<TableRow
-									key={index}
+									key={month.month}
 									sx={{
 										"&:nth-of-type(odd)": { bgcolor: "action.hover" },
 										"&:hover": { bgcolor: "action.selected" },

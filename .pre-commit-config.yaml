@@ -1,7 +1,7 @@
 repos:
   # 1. General Hygiene & Security
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -15,33 +15,22 @@ repos:
 
   # 2. Secret Scanning (Highly Recommended)
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.21.2
+    rev: v8.30.0
     hooks:
       - id: gitleaks
 
   # 3. Spelling & Typos (Across all file types)
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.3.0
+    rev: v2.4.1
     hooks:
       - id: codespell
         args: ["--skip=*.lock,package.json,package-lock.json"]
 
   # 4. GitHub Actions / Schema Validation
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.30.0
+    rev: 0.36.0
     hooks:
       - id: check-github-workflows
-
-  # React/JS: Biome & Knip
-  - repo: https://github.com/biomejs/pre-commit
-    rev: v0.1.0
-    hooks:
-      - id: biome-check
-        name: biome-check
-        entry: npx biome check --write
-        language: node
-        pass_filenames: false
-        always_run: true
 
   - repo: local
     hooks:
@@ -52,3 +41,11 @@ repos:
         pass_filenames: false
         always_run: true
         description: "Find unused files, dependencies, and exports in JS/TS projects."
+
+  - repo: local
+    hooks:
+      - id: local-biome-check
+        name: biome check
+        entry: npx biome check --write --files-ignore-unknown=true --no-errors-on-unmatched
+        language: system
+        types: [text]

@@ -13,7 +13,7 @@ const VALIDATION_RULES = {
 	},
 
 	numeric: (value) => {
-		if (value && isNaN(Number(value))) {
+		if (value && Number.isNaN(Number(value))) {
 			return "Please enter a valid number";
 		}
 		return null;
@@ -21,7 +21,7 @@ const VALIDATION_RULES = {
 
 	positive: (value) => {
 		const num = Number(value);
-		if (value && (isNaN(num) || num < 0)) {
+		if (value && (Number.isNaN(num) || num < 0)) {
 			return "Please enter a positive number";
 		}
 		return null;
@@ -29,7 +29,7 @@ const VALIDATION_RULES = {
 
 	percentage: (value) => {
 		const num = Number(value);
-		if (value && (isNaN(num) || num < 0 || num > 100)) {
+		if (value && (Number.isNaN(num) || num < 0 || num > 100)) {
 			return "Percentage must be between 0 and 100";
 		}
 		return null;
@@ -37,7 +37,7 @@ const VALIDATION_RULES = {
 
 	maxValue: (max) => (value) => {
 		const num = Number(value);
-		if (value && !isNaN(num) && num > max) {
+		if (value && !Number.isNaN(num) && num > max) {
 			return `Maximum allowed value is ${max.toLocaleString("en-IN")}`;
 		}
 		return null;
@@ -45,7 +45,7 @@ const VALIDATION_RULES = {
 
 	minValue: (min) => (value) => {
 		const num = Number(value);
-		if (value && !isNaN(num) && num < min) {
+		if (value && !Number.isNaN(num) && num < min) {
 			return `Minimum allowed value is ${min.toLocaleString("en-IN")}`;
 		}
 		return null;
@@ -64,7 +64,7 @@ const VALIDATION_RULES = {
 	// Specific business logic validations
 	reasonableSalary: (value) => {
 		const num = Number(value);
-		if (value && !isNaN(num)) {
+		if (value && !Number.isNaN(num)) {
 			if (num < 10000) {
 				return "Salary seems too low for annual amount";
 			}
@@ -79,7 +79,12 @@ const VALIDATION_RULES = {
 	rentVsSalary: (rentPaid, basicSalary) => {
 		const rent = Number(rentPaid);
 		const salary = Number(basicSalary);
-		if (rentPaid && basicSalary && !isNaN(rent) && !isNaN(salary)) {
+		if (
+			rentPaid &&
+			basicSalary &&
+			!Number.isNaN(rent) &&
+			!Number.isNaN(salary)
+		) {
 			if (rent > salary * 2) {
 				return "Rent paid seems unusually high compared to salary";
 			}
@@ -89,7 +94,7 @@ const VALIDATION_RULES = {
 
 	rsuShares: (value) => {
 		const num = Number(value);
-		if (value && !isNaN(num) && num > 10000) {
+		if (value && !Number.isNaN(num) && num > 10000) {
 			return "Number of RSU shares seems unusually high";
 		}
 		return null;
@@ -97,7 +102,7 @@ const VALIDATION_RULES = {
 
 	rsuPrice: (value) => {
 		const num = Number(value);
-		if (value && !isNaN(num)) {
+		if (value && !Number.isNaN(num)) {
 			if (num < 1) {
 				return "RSU price per share seems too low";
 			}
@@ -110,7 +115,7 @@ const VALIDATION_RULES = {
 
 	exchangeRate: (value) => {
 		const num = Number(value);
-		if (value && !isNaN(num)) {
+		if (value && !Number.isNaN(num)) {
 			if (num < 60 || num > 120) {
 				return "Exchange rate seems unreasonable (typical range: 60-120)";
 			}

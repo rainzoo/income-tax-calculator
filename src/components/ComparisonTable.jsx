@@ -176,7 +176,7 @@ export default function ComparisonTable({ summary }) {
 								return (
 									<Box
 										component="tr"
-										key={index}
+										key={row.label}
 										sx={{
 											bgcolor: row.isTotal
 												? "grey.100"
