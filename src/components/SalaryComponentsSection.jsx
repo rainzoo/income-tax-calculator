@@ -22,8 +22,10 @@ const SalaryComponentsSection = memo(function SalaryComponentsSection({
 				p: 3,
 				mb: 4,
 				borderRadius: 2,
-				bgcolor: "primary.light",
-				background: "linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)",
+				bgcolor: "background.paper",
+				border: "1px solid",
+				borderColor: "primary.dark",
+				boxShadow: "0 0 20px rgba(59, 130, 246, 0.05)",
 			}}
 		>
 			<Box display="flex" alignItems="center" mb={3}>
@@ -50,6 +52,8 @@ const SalaryComponentsSection = memo(function SalaryComponentsSection({
 						value={getDisplayValue("basicSalary", formData.basicSalary)}
 						onChange={handleChange}
 						type="text"
+						inputMode="numeric"
+						autoComplete="transaction-amount"
 						InputProps={{
 							startAdornment: (
 								<InputAdornment position="start">₹</InputAdornment>
@@ -69,6 +73,8 @@ const SalaryComponentsSection = memo(function SalaryComponentsSection({
 						onChange={handleChange}
 						type="text"
 						disabled={formData.autoCalculateHRA}
+						inputMode="numeric"
+						autoComplete="transaction-amount"
 						InputProps={{
 							startAdornment: (
 								<InputAdornment position="start">₹</InputAdornment>
@@ -128,6 +134,8 @@ const SalaryComponentsSection = memo(function SalaryComponentsSection({
 						)}
 						onChange={handleChange}
 						type="text"
+						inputMode="numeric"
+						autoComplete="transaction-amount"
 						InputProps={{
 							startAdornment: (
 								<InputAdornment position="start">₹</InputAdornment>
@@ -144,6 +152,8 @@ const SalaryComponentsSection = memo(function SalaryComponentsSection({
 						value={getDisplayValue("lta", formData.lta)}
 						onChange={handleChange}
 						type="text"
+						inputMode="numeric"
+						autoComplete="transaction-amount"
 						InputProps={{
 							startAdornment: (
 								<InputAdornment position="start">₹</InputAdornment>
@@ -163,6 +173,8 @@ const SalaryComponentsSection = memo(function SalaryComponentsSection({
 						)}
 						onChange={handleChange}
 						type="text"
+						inputMode="numeric"
+						autoComplete="transaction-amount"
 						InputProps={{
 							startAdornment: (
 								<InputAdornment position="start">₹</InputAdornment>
@@ -179,6 +191,8 @@ const SalaryComponentsSection = memo(function SalaryComponentsSection({
 						value={getDisplayValue("otherAllowances", formData.otherAllowances)}
 						onChange={handleChange}
 						type="text"
+						inputMode="numeric"
+						autoComplete="transaction-amount"
 						InputProps={{
 							startAdornment: (
 								<InputAdornment position="start">₹</InputAdornment>
@@ -195,6 +209,8 @@ const SalaryComponentsSection = memo(function SalaryComponentsSection({
 						value={getDisplayValue("perquisites", formData.perquisites)}
 						onChange={handleChange}
 						type="text"
+						inputMode="numeric"
+						autoComplete="transaction-amount"
 						InputProps={{
 							startAdornment: (
 								<InputAdornment position="start">₹</InputAdornment>

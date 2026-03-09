@@ -99,9 +99,13 @@ export default function ComparisonTable({ summary }) {
 				<Box sx={{ overflowX: "auto", mb: 4 }}>
 					<Box
 						component="table"
-						sx={{ minWidth: "100%", borderCollapse: "collapse" }}
+						sx={{
+							minWidth: "100%",
+							borderCollapse: "separate",
+							borderSpacing: "0 4px",
+						}}
 					>
-						<Box component="thead" sx={{ bgcolor: "grey.50" }}>
+						<Box component="thead">
 							<Box component="tr">
 								<Box
 									component="th"
@@ -114,6 +118,7 @@ export default function ComparisonTable({ summary }) {
 										color: "text.secondary",
 										textTransform: "uppercase",
 										letterSpacing: "0.05em",
+										borderBottom: "1px solid rgba(255,255,255,0.1)",
 									}}
 								>
 									Component
@@ -126,10 +131,11 @@ export default function ComparisonTable({ summary }) {
 										textAlign: "right",
 										fontSize: "0.75rem",
 										fontWeight: 600,
-										color: "text.secondary",
+										color: "error.light",
 										textTransform: "uppercase",
 										letterSpacing: "0.05em",
-										bgcolor: "error.50",
+										bgcolor: "rgba(239, 68, 68, 0.1)",
+										borderBottom: "1px solid rgba(239, 68, 68, 0.2)",
 									}}
 								>
 									Old Regime
@@ -142,10 +148,11 @@ export default function ComparisonTable({ summary }) {
 										textAlign: "right",
 										fontSize: "0.75rem",
 										fontWeight: 600,
-										color: "text.secondary",
+										color: "primary.light",
 										textTransform: "uppercase",
 										letterSpacing: "0.05em",
-										bgcolor: "info.50",
+										bgcolor: "rgba(59, 130, 246, 0.1)",
+										borderBottom: "1px solid rgba(59, 130, 246, 0.2)",
 									}}
 								>
 									New Regime
@@ -158,18 +165,19 @@ export default function ComparisonTable({ summary }) {
 										textAlign: "right",
 										fontSize: "0.75rem",
 										fontWeight: 600,
-										color: "text.secondary",
+										color: "success.light",
 										textTransform: "uppercase",
 										letterSpacing: "0.05em",
-										bgcolor: "success.50",
+										bgcolor: "rgba(34, 197, 94, 0.1)",
+										borderBottom: "1px solid rgba(34, 197, 94, 0.2)",
 									}}
 								>
 									Difference
 								</Box>
 							</Box>
 						</Box>
-						<Box component="tbody" sx={{ bgcolor: "background.paper" }}>
-							{comparisonData.map((row, index) => {
+						<Box component="tbody">
+							{comparisonData.map((row) => {
 								const isPositive = row.difference > 0;
 								const isZero = row.difference === 0;
 
@@ -179,13 +187,11 @@ export default function ComparisonTable({ summary }) {
 										key={row.label}
 										sx={{
 											bgcolor: row.isTotal
-												? "grey.100"
-												: index % 2 === 0
-													? "background.paper"
-													: "grey.50",
+												? "rgba(255, 255, 255, 0.05)"
+												: "background.paper",
 											borderLeft: row.highlight ? 4 : 0,
 											borderColor: "primary.main",
-											"&:hover": { bgcolor: "action.hover" },
+											"&:hover": { bgcolor: "rgba(255, 255, 255, 0.02)" },
 										}}
 									>
 										<Box
@@ -197,6 +203,7 @@ export default function ComparisonTable({ summary }) {
 												fontWeight: row.isTotal ? 700 : 500,
 												color: "text.primary",
 												whiteSpace: "nowrap",
+												borderBottom: "1px solid rgba(255,255,255,0.05)",
 											}}
 										>
 											{row.label}
@@ -209,8 +216,10 @@ export default function ComparisonTable({ summary }) {
 												fontSize: "0.875rem",
 												color: "text.primary",
 												textAlign: "right",
-												bgcolor: "error.50",
+												bgcolor: "rgba(239, 68, 68, 0.05)",
 												whiteSpace: "nowrap",
+												fontVariantNumeric: "tabular-nums",
+												borderBottom: "1px solid rgba(255,255,255,0.05)",
 											}}
 										>
 											{formatCurrency(row.oldRegime)}
@@ -223,8 +232,10 @@ export default function ComparisonTable({ summary }) {
 												fontSize: "0.875rem",
 												color: "text.primary",
 												textAlign: "right",
-												bgcolor: "info.50",
+												bgcolor: "rgba(59, 130, 246, 0.05)",
 												whiteSpace: "nowrap",
+												fontVariantNumeric: "tabular-nums",
+												borderBottom: "1px solid rgba(255,255,255,0.05)",
 											}}
 										>
 											{formatCurrency(row.newRegime)}
@@ -236,9 +247,11 @@ export default function ComparisonTable({ summary }) {
 												py: 2,
 												fontSize: "0.875rem",
 												textAlign: "right",
-												bgcolor: "success.50",
+												bgcolor: "rgba(34, 197, 94, 0.05)",
 												whiteSpace: "nowrap",
 												fontWeight: 600,
+												fontVariantNumeric: "tabular-nums",
+												borderBottom: "1px solid rgba(255,255,255,0.05)",
 												color: isZero
 													? "text.secondary"
 													: isPositive
@@ -271,18 +284,18 @@ export default function ComparisonTable({ summary }) {
 
 				<Card
 					sx={{
-						bgcolor: "info.50",
+						bgcolor: "rgba(59, 130, 246, 0.05)",
 						border: "1px solid",
-						borderColor: "info.main",
+						borderColor: "rgba(59, 130, 246, 0.2)",
 						borderRadius: 2,
 					}}
 				>
 					<CardContent sx={{ p: 3 }}>
 						<Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-							<TableChartIcon sx={{ mr: 1, color: "info.main" }} />
+							<TableChartIcon sx={{ mr: 1, color: "primary.main" }} />
 							<Typography
 								variant="h6"
-								sx={{ fontWeight: 600, color: "info.dark" }}
+								sx={{ fontWeight: 600, color: "primary.light" }}
 							>
 								Key Insights
 							</Typography>

@@ -30,7 +30,17 @@ export default function TaxChart({ summary }) {
 	};
 
 	return (
-		<Card sx={{ mb: 4 }}>
+		<Card
+			sx={{
+				mb: 4,
+				bgcolor: "background.paper",
+				border: "1px solid",
+				borderColor: "primary.dark",
+				boxShadow: "0 0 30px rgba(59, 130, 246, 0.05)",
+			}}
+			role="region"
+			aria-label="Income Distribution Chart"
+		>
 			<CardContent sx={{ p: 4 }}>
 				<Box sx={{ display: "flex", alignItems: "center", mb: 4 }}>
 					<PieChartIcon sx={{ mr: 2, color: "primary.main", fontSize: 28 }} />
@@ -70,11 +80,11 @@ export default function TaxChart({ summary }) {
 								>
 									<stop
 										offset="0%"
-										style={{ stopColor: "#f5f5f5", stopOpacity: 1 }}
+										style={{ stopColor: "#27272a", stopOpacity: 1 }}
 									/>
 									<stop
 										offset="100%"
-										style={{ stopColor: "#e0e0e0", stopOpacity: 1 }}
+										style={{ stopColor: "#18181b", stopOpacity: 1 }}
 									/>
 								</linearGradient>
 								<linearGradient
@@ -86,11 +96,11 @@ export default function TaxChart({ summary }) {
 								>
 									<stop
 										offset="0%"
-										style={{ stopColor: "#f44336", stopOpacity: 1 }}
+										style={{ stopColor: "#ef4444", stopOpacity: 1 }}
 									/>
 									<stop
 										offset="100%"
-										style={{ stopColor: "#d32f2f", stopOpacity: 1 }}
+										style={{ stopColor: "#b91c1c", stopOpacity: 1 }}
 									/>
 								</linearGradient>
 								<linearGradient
@@ -102,11 +112,11 @@ export default function TaxChart({ summary }) {
 								>
 									<stop
 										offset="0%"
-										style={{ stopColor: "#4caf50", stopOpacity: 1 }}
+										style={{ stopColor: "#22c55e", stopOpacity: 1 }}
 									/>
 									<stop
 										offset="100%"
-										style={{ stopColor: "#2e7d32", stopOpacity: 1 }}
+										style={{ stopColor: "#15803d", stopOpacity: 1 }}
 									/>
 								</linearGradient>
 							</defs>
@@ -157,7 +167,8 @@ export default function TaxChart({ summary }) {
 								left: "50%",
 								transform: "translate(-50%, -50%)",
 								textAlign: "center",
-								backgroundColor: "rgba(255, 255, 255, 0.9)",
+								backgroundColor: "rgba(24, 24, 27, 0.9)",
+								border: "1px solid rgba(255, 255, 255, 0.1)",
 								borderRadius: "50%",
 								width: 60,
 								height: 60,
@@ -165,7 +176,7 @@ export default function TaxChart({ summary }) {
 								flexDirection: "column",
 								alignItems: "center",
 								justifyContent: "center",
-								boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+								boxShadow: "0 4px 12px rgba(0, 0, 0, 0.5)",
 							}}
 						>
 							<Typography
@@ -193,25 +204,16 @@ export default function TaxChart({ summary }) {
 							{/* Net Salary */}
 							<Box
 								sx={{
-									display: "flex",
-									alignItems: "center",
-									gap: 2,
-									p: 2,
-									borderRadius: 2,
-									backgroundColor: "success.50",
-									border: "1px solid",
-									borderColor: "success.200",
-									transition: "all 0.3s ease",
-									"&:hover": { transform: "translateY(-1px)", boxShadow: 2 },
+									boxShadow: "0 2px 8px rgba(34, 197, 94, 0.2)",
 								}}
 							>
 								<Box
 									sx={{
 										width: 20,
 										height: 20,
-										background: "linear-gradient(135deg, #4caf50, #2e7d32)",
+										background: "linear-gradient(135deg, #22c55e, #15803d)",
 										borderRadius: 1,
-										boxShadow: "0 2px 4px rgba(76, 175, 80, 0.3)",
+										boxShadow: "0 2px 4px rgba(34, 197, 94, 0.3)",
 									}}
 								/>
 								<Box sx={{ flex: 1 }}>
@@ -233,25 +235,16 @@ export default function TaxChart({ summary }) {
 							{/* Tax */}
 							<Box
 								sx={{
-									display: "flex",
-									alignItems: "center",
-									gap: 2,
-									p: 2,
-									borderRadius: 2,
-									backgroundColor: "error.50",
-									border: "1px solid",
-									borderColor: "error.200",
-									transition: "all 0.3s ease",
-									"&:hover": { transform: "translateY(-1px)", boxShadow: 2 },
+									boxShadow: "0 2px 8px rgba(239, 68, 68, 0.2)",
 								}}
 							>
 								<Box
 									sx={{
 										width: 20,
 										height: 20,
-										background: "linear-gradient(135deg, #f44336, #d32f2f)",
+										background: "linear-gradient(135deg, #ef4444, #b91c1c)",
 										borderRadius: 1,
-										boxShadow: "0 2px 4px rgba(244, 67, 54, 0.3)",
+										boxShadow: "0 2px 4px rgba(239, 68, 68, 0.3)",
 									}}
 								/>
 								<Box sx={{ flex: 1 }}>
@@ -275,11 +268,10 @@ export default function TaxChart({ summary }) {
 						<Card
 							sx={{
 								mt: 3,
-								backgroundColor: "grey.50",
+								backgroundColor: "background.paper",
 								border: "1px solid",
-								borderColor: "grey.200",
-								transition: "all 0.3s ease",
-								"&:hover": { boxShadow: 2 },
+								borderColor: "rgba(255, 255, 255, 0.1)",
+								boxShadow: "inset 0 0 20px rgba(0,0,0,0.5)",
 							}}
 						>
 							<CardContent sx={{ p: 3, "&:last-child": { pb: 3 } }}>

@@ -9,13 +9,17 @@ import {
 	ThemeProvider,
 	Typography,
 } from "@mui/material";
-import { useState } from "react";
-import ComparisonTable from "./components/ComparisonTable";
+import { lazy, Suspense, useState } from "react";
+
+const SalaryInputForm = lazy(() => import("./components/SalaryInputForm"));
+const TaxChart = lazy(() => import("./components/TaxChart"));
+const ComparisonTable = lazy(() => import("./components/ComparisonTable"));
+const MonthWiseBreakdown = lazy(
+	() => import("./components/MonthWiseBreakdown"),
+);
+const RegimeSelector = lazy(() => import("./components/RegimeSelector"));
+
 import Header from "./components/Header";
-import MonthWiseBreakdown from "./components/MonthWiseBreakdown";
-import RegimeSelector from "./components/RegimeSelector";
-import SalaryInputForm from "./components/SalaryInputForm";
-import TaxChart from "./components/TaxChart";
 import {
 	calculateAnnualSummary,
 	calculateMonthlyBreakdown,
@@ -23,84 +27,77 @@ import {
 
 const theme = createTheme({
 	palette: {
+		mode: "dark",
 		primary: {
-			main: "#1565c0",
-			light: "#42a5f5",
-			dark: "#0d47a1",
+			main: "#3b82f6", // Blue
+			light: "#60a5fa",
+			dark: "#2563eb",
 		},
 		secondary: {
-			main: "#424242",
-			light: "#6d6d6d",
-			dark: "#1b1b1b",
+			main: "#a8a29e", // Stone
+			light: "#d6d3d1",
+			dark: "#78716c",
 		},
 		success: {
-			main: "#2e7d32",
-			light: "#4caf50",
-			dark: "#1b5e20",
+			main: "#22c55e",
+			light: "#4ade80",
+			dark: "#16a34a",
 		},
 		error: {
-			main: "#d32f2f",
-			light: "#ef5350",
-			dark: "#c62828",
+			main: "#ef4444",
+			light: "#f87171",
+			dark: "#dc2626",
 		},
 		warning: {
-			main: "#f57c00",
-			light: "#ffb74d",
-			dark: "#e65100",
-		},
-		info: {
-			main: "#0288d1",
-			light: "#4fc3f7",
-			dark: "#01579b",
+			main: "#f59e0b",
+			light: "#fbbf24",
+			dark: "#d97706",
 		},
 		background: {
-			default: "#f8fafc",
-			paper: "#ffffff",
+			default: "#09090b", // Zinc 950
+			paper: "#18181b", // Zinc 900
 		},
 		text: {
-			primary: "#1a202c",
-			secondary: "#4a5568",
+			primary: "#fafafa",
+			secondary: "#a1a1aa", // Zinc 400
 		},
 	},
 	typography: {
 		fontFamily: [
+			"'DM Sans'",
 			"-apple-system",
 			"BlinkMacSystemFont",
 			'"Segoe UI"',
 			"Roboto",
-			'"Helvetica Neue"',
-			"Arial",
 			"sans-serif",
 		].join(","),
 		h1: {
+			fontFamily: "'DM Serif Display', serif",
 			fontSize: "2.5rem",
-			fontWeight: 700,
-			lineHeight: 1.2,
+			letterSpacing: "-0.02em",
 		},
 		h2: {
+			fontFamily: "'DM Serif Display', serif",
 			fontSize: "2rem",
-			fontWeight: 600,
-			lineHeight: 1.3,
+			letterSpacing: "-0.01em",
 		},
 		h3: {
+			fontFamily: "'DM Serif Display', serif",
 			fontSize: "1.75rem",
-			fontWeight: 600,
-			lineHeight: 1.3,
 		},
 		h4: {
+			fontFamily: "'DM Serif Display', serif",
 			fontSize: "1.5rem",
-			fontWeight: 600,
-			lineHeight: 1.4,
 		},
 		h5: {
+			fontFamily: "'DM Serif Display', serif",
 			fontSize: "1.25rem",
-			fontWeight: 600,
-			lineHeight: 1.4,
 		},
 		h6: {
+			fontFamily: "'DM Sans', sans-serif",
 			fontSize: "1.125rem",
 			fontWeight: 600,
-			lineHeight: 1.4,
+			letterSpacing: "0.01em",
 		},
 		body1: {
 			fontSize: "1rem",
@@ -112,35 +109,28 @@ const theme = createTheme({
 		},
 	},
 	shape: {
-		borderRadius: 12,
+		borderRadius: 16,
 	},
 	components: {
 		MuiCard: {
 			styleOverrides: {
 				root: {
 					boxShadow:
-						"0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-					borderRadius: 12,
-					border: "1px solid rgba(0, 0, 0, 0.08)",
+						"0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.4)",
+					border: "1px solid rgba(255, 255, 255, 0.1)",
+					backgroundColor: "#18181b",
 				},
 			},
 		},
 		MuiPaper: {
 			styleOverrides: {
-				root: {
-					borderRadius: 12,
-				},
 				elevation1: {
 					boxShadow:
-						"0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+						"0 1px 3px 0 rgba(0, 0, 0, 0.5), 0 1px 2px -1px rgba(0, 0, 0, 0.5)",
 				},
 				elevation2: {
 					boxShadow:
-						"0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-				},
-				elevation3: {
-					boxShadow:
-						"0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+						"0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.5)",
 				},
 			},
 		},
@@ -172,8 +162,10 @@ function App() {
 	const handleCalculate = async (data) => {
 		setIsCalculating(true);
 
-		// Simulate calculation delay for better UX
-		await new Promise((resolve) => setTimeout(resolve, 800));
+		// Non-blocking calculation yielding to paint
+		await new Promise((resolve) =>
+			requestAnimationFrame(() => setTimeout(resolve, 0)),
+		);
 
 		const annualSummary = calculateAnnualSummary(data);
 		const monthlyBreakdown = calculateMonthlyBreakdown(data);
@@ -201,7 +193,9 @@ function App() {
 					>
 						{/* Left Column: Input Form */}
 						<Box sx={{ flex: "1 1 40%" }}>
-							<SalaryInputForm onCalculate={handleCalculate} />
+							<Suspense fallback={<div>Loading form...</div>}>
+								<SalaryInputForm onCalculate={handleCalculate} />
+							</Suspense>
 						</Box>
 
 						{/* Right Column: Tax Calculation Results */}
@@ -325,43 +319,43 @@ function App() {
 									</Card>
 								</Box>
 							) : summary ? (
-								<Box>
-									{/* Income Distribution Chart */}
-									<Box sx={{ mb: 4 }}>
-										<TaxChart summary={summary} />
-									</Box>
-
-									{/* Analysis & Comparison Section */}
-									<Box sx={{ mb: 4 }}>
-										<Typography
-											variant="h6"
-											fontWeight="semibold"
-											sx={{ mb: 2, color: "text.secondary" }}
-										>
-											Regime Analysis & Comparison
-										</Typography>
-										<ComparisonTable summary={summary} />
-									</Box>
-
-									{/* Monthly Breakdown Section */}
+								<Suspense fallback={<div>Loading results...</div>}>
 									<Box>
-										<Typography
-											variant="h6"
-											fontWeight="semibold"
-											sx={{ mb: 2, color: "text.secondary" }}
-										>
-											Monthly Salary Breakdown
-										</Typography>
-										<RegimeSelector
-											regime={selectedRegime}
-											onChange={setSelectedRegime}
-										/>
-										<MonthWiseBreakdown
-											monthlyData={monthlyData}
-											selectedRegime={selectedRegime}
-										/>
+										{/* Income Distribution Chart */}
+										<Box sx={{ mb: 4 }}>
+											<TaxChart summary={summary} />
+										</Box>
+
+										{/* Analysis & Comparison Section */}
+										<Box sx={{ mb: 4 }}>
+											<Typography
+												variant="h6"
+												sx={{ mb: 2, color: "text.secondary" }}
+											>
+												Regime Analysis & Comparison
+											</Typography>
+											<ComparisonTable summary={summary} />
+										</Box>
+
+										{/* Monthly Breakdown Section */}
+										<Box>
+											<Typography
+												variant="h6"
+												sx={{ mb: 2, color: "text.secondary" }}
+											>
+												Monthly Salary Breakdown
+											</Typography>
+											<RegimeSelector
+												regime={selectedRegime}
+												onChange={setSelectedRegime}
+											/>
+											<MonthWiseBreakdown
+												monthlyData={monthlyData}
+												selectedRegime={selectedRegime}
+											/>
+										</Box>
 									</Box>
-								</Box>
+								</Suspense>
 							) : (
 								<Card
 									sx={{
@@ -399,102 +393,107 @@ function App() {
 							sx={{
 								p: 4,
 								bgcolor: "background.paper",
-								borderRadius: 3,
-								boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
-								border: "1px solid rgba(0, 0, 0, 0.06)",
+								borderRadius: 4,
+								border: "1px solid rgba(255, 255, 255, 0.1)",
 								position: "relative",
-								"&::before": {
-									content: '""',
-									position: "absolute",
-									top: 0,
-									left: 0,
-									right: 0,
-									height: "4px",
-									background:
-										"linear-gradient(90deg, #1565c0, #42a5f5, #0d47a1)",
-									borderRadius: "12px 12px 0 0",
-								},
+								overflow: "hidden",
 							}}
 						>
-							<Typography
-								variant="h6"
-								sx={{
-									color: "primary.main",
-									fontWeight: 600,
-									mb: 3,
-									display: "flex",
-									alignItems: "center",
-									justifyContent: "center",
-									gap: 1,
-								}}
-							>
-								⚠️ Important Disclaimer
-							</Typography>
-							<Typography
-								variant="body1"
-								color="text.secondary"
-								gutterBottom
-								sx={{ mb: 2, fontWeight: 500 }}
-							>
-								This calculator provides estimates based on FY 2025-26 Indian
-								tax rules and regulations.
-							</Typography>
-							<Typography
-								variant="body2"
-								color="text.secondary"
-								gutterBottom
-								sx={{ mb: 3 }}
-							>
-								For accurate tax planning and filing, please consult with a
-								qualified Chartered Accountant or tax advisor. This tool is for
-								educational and planning purposes only.
-							</Typography>
+							{/* Subtle glow effect behind card */}
 							<Box
 								sx={{
-									display: "flex",
-									flexWrap: "wrap",
-									justifyContent: "center",
-									gap: 3,
-									mt: 3,
-									pt: 3,
-									borderTop: "1px solid rgba(0, 0, 0, 0.08)",
+									position: "absolute",
+									top: "-50%",
+									left: "-50%",
+									width: "200%",
+									height: "200%",
+									background:
+										"radial-gradient(circle, rgba(59,130,246,0.1) 0%, rgba(9,9,11,0) 50%)",
+									pointerEvents: "none",
+									zIndex: 0,
 								}}
-							>
-								<Box sx={{ textAlign: "center" }}>
-									<Typography
-										variant="body2"
-										color="text.secondary"
-										sx={{ fontWeight: 600 }}
-									>
-										Tax Components Included
-									</Typography>
-									<Typography variant="caption" color="text.secondary">
-										Income Tax • Surcharge • Cess (4%)
-									</Typography>
-								</Box>
-								<Box sx={{ textAlign: "center" }}>
-									<Typography
-										variant="body2"
-										color="text.secondary"
-										sx={{ fontWeight: 600 }}
-									>
-										Special Provisions
-									</Typography>
-									<Typography variant="caption" color="text.secondary">
-										HRA • RSU • Section 80C/80D
-									</Typography>
-								</Box>
-								<Box sx={{ textAlign: "center" }}>
-									<Typography
-										variant="body2"
-										color="text.secondary"
-										sx={{ fontWeight: 600 }}
-									>
-										Tax Regimes
-									</Typography>
-									<Typography variant="caption" color="text.secondary">
-										Old Regime • New Regime
-									</Typography>
+							/>
+							<Box sx={{ position: "relative", zIndex: 1 }}>
+								<Typography
+									variant="h6"
+									sx={{
+										color: "primary.main",
+										fontWeight: 600,
+										mb: 3,
+										display: "flex",
+										alignItems: "center",
+										justifyContent: "center",
+										gap: 1,
+									}}
+								>
+									⚠️ Important Disclaimer
+								</Typography>
+								<Typography
+									variant="body1"
+									color="text.secondary"
+									gutterBottom
+									sx={{ mb: 2, fontWeight: 500 }}
+								>
+									This calculator provides estimates based on FY 2025-26 Indian
+									tax rules and regulations.
+								</Typography>
+								<Typography
+									variant="body2"
+									color="text.secondary"
+									gutterBottom
+									sx={{ mb: 3 }}
+								>
+									For accurate tax planning and filing, please consult with a
+									qualified Chartered Accountant or tax advisor. This tool is
+									for educational and planning purposes only.
+								</Typography>
+								<Box
+									sx={{
+										display: "flex",
+										flexWrap: "wrap",
+										justifyContent: "center",
+										gap: 3,
+										mt: 3,
+										pt: 3,
+										borderTop: "1px solid rgba(0, 0, 0, 0.08)",
+									}}
+								>
+									<Box sx={{ textAlign: "center" }}>
+										<Typography
+											variant="body2"
+											color="text.secondary"
+											sx={{ fontWeight: 600 }}
+										>
+											Tax Components Included
+										</Typography>
+										<Typography variant="caption" color="text.secondary">
+											Income Tax • Surcharge • Cess (4%)
+										</Typography>
+									</Box>
+									<Box sx={{ textAlign: "center" }}>
+										<Typography
+											variant="body2"
+											color="text.secondary"
+											sx={{ fontWeight: 600 }}
+										>
+											Special Provisions
+										</Typography>
+										<Typography variant="caption" color="text.secondary">
+											HRA • RSU • Section 80C/80D
+										</Typography>
+									</Box>
+									<Box sx={{ textAlign: "center" }}>
+										<Typography
+											variant="body2"
+											color="text.secondary"
+											sx={{ fontWeight: 600 }}
+										>
+											Tax Regimes
+										</Typography>
+										<Typography variant="caption" color="text.secondary">
+											Old Regime • New Regime
+										</Typography>
+									</Box>
 								</Box>
 							</Box>
 						</Box>

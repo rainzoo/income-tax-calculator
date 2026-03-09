@@ -24,8 +24,10 @@ const RSUSection = memo(function RSUSection({
 				p: 3,
 				mb: 4,
 				borderRadius: 2,
-				bgcolor: "warning.light",
-				background: "linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%)",
+				bgcolor: "background.paper",
+				border: "1px solid",
+				borderColor: "warning.dark",
+				boxShadow: "0 0 20px rgba(245, 158, 11, 0.05)",
 			}}
 		>
 			<Box display="flex" alignItems="center" mb={3}>
@@ -51,6 +53,7 @@ const RSUSection = memo(function RSUSection({
 						value={formData.rsuSharesPerQuarter}
 						onChange={handleChange}
 						type="number"
+						inputMode="numeric"
 						helperText="RSU shares vested each quarter"
 					/>
 				</Grid>
@@ -63,6 +66,7 @@ const RSUSection = memo(function RSUSection({
 						value={formData.rsuPricePerShare}
 						onChange={handleChange}
 						type="number"
+						inputMode="numeric"
 						InputProps={{
 							startAdornment: (
 								<InputAdornment position="start">
@@ -98,6 +102,7 @@ const RSUSection = memo(function RSUSection({
 							value={formData.rsuExchangeRate}
 							onChange={handleChange}
 							type="number"
+							inputMode="numeric"
 							helperText="Current exchange rate"
 						/>
 					</Grid>
@@ -111,6 +116,7 @@ const RSUSection = memo(function RSUSection({
 						value={formData.rsuWithholdingRate}
 						onChange={handleChange}
 						type="number"
+						inputMode="numeric"
 						helperText="Default: 22% for supplemental income"
 					/>
 				</Grid>

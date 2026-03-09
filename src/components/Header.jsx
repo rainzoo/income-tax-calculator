@@ -7,10 +7,10 @@ export default function Header() {
 			position="static"
 			sx={{
 				background:
-					"linear-gradient(135deg, #1565c0 0%, #42a5f5 50%, #0d47a1 100%)",
-				boxShadow: "0 8px 32px rgba(21, 101, 192, 0.3)",
+					"linear-gradient(180deg, rgba(9,9,11,1) 0%, rgba(24,24,27,1) 100%)",
+				boxShadow: "0 4px 30px rgba(0, 0, 0, 0.5)",
 				mb: 4,
-				borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+				borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
 				borderRadius: 0,
 			}}
 		>
@@ -30,13 +30,12 @@ export default function Header() {
 							<CalculateIcon sx={{ fontSize: 28, color: "white" }} />
 						</Box>
 						<Typography
-							variant="h5"
-							component="div"
+							variant="h4"
+							component="h1"
 							sx={{
-								fontWeight: 700,
-								letterSpacing: 0.5,
-								color: "white",
-								textShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+								fontFamily: "'DM Serif Display', serif",
+								color: "primary.main",
+								textShadow: "0 2px 10px rgba(59, 130, 246, 0.2)",
 							}}
 						>
 							Indian Income Tax Calculator

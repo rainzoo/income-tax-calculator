@@ -25,8 +25,10 @@ const HRAExemptionSection = memo(function HRAExemptionSection({
 				p: 3,
 				mb: 4,
 				borderRadius: 2,
-				bgcolor: "success.light",
-				background: "linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)",
+				bgcolor: "background.paper",
+				border: "1px solid",
+				borderColor: "success.dark",
+				boxShadow: "0 0 20px rgba(34, 197, 94, 0.05)",
 			}}
 		>
 			<Box display="flex" alignItems="center" mb={3}>
@@ -52,6 +54,8 @@ const HRAExemptionSection = memo(function HRAExemptionSection({
 						value={getDisplayValue("rentPaid", formData.rentPaid)}
 						onChange={handleChange}
 						type="text"
+						inputMode="numeric"
+						autoComplete="transaction-amount"
 						InputProps={{
 							startAdornment: (
 								<InputAdornment position="start">₹</InputAdornment>

@@ -60,25 +60,49 @@ export default function MonthWiseBreakdown({ monthlyData, selectedRegime }) {
 										zIndex: 3,
 										bgcolor: "background.paper",
 										fontWeight: "bold",
+										color: "text.primary",
+										borderBottom: "1px solid rgba(255,255,255,0.1)",
 									}}
 								>
 									Month
 								</TableCell>
-								<TableCell align="right" sx={{ fontWeight: "bold" }}>
+								<TableCell
+									align="right"
+									sx={{
+										fontWeight: "bold",
+										color: "text.primary",
+										borderBottom: "1px solid rgba(255,255,255,0.1)",
+									}}
+								>
 									Basic
 								</TableCell>
-								<TableCell align="right" sx={{ fontWeight: "bold" }}>
+								<TableCell
+									align="right"
+									sx={{
+										fontWeight: "bold",
+										color: "text.primary",
+										borderBottom: "1px solid rgba(255,255,255,0.1)",
+									}}
+								>
 									HRA
 								</TableCell>
-								<TableCell align="right" sx={{ fontWeight: "bold" }}>
+								<TableCell
+									align="right"
+									sx={{
+										fontWeight: "bold",
+										color: "text.primary",
+										borderBottom: "1px solid rgba(255,255,255,0.1)",
+									}}
+								>
 									Allowances
 								</TableCell>
 								<TableCell
 									align="right"
 									sx={{
 										fontWeight: "bold",
-										bgcolor: "warning.main",
-										color: "warning.contrastText",
+										bgcolor: "rgba(245, 158, 11, 0.1)",
+										color: "warning.main",
+										borderBottom: "1px solid rgba(245, 158, 11, 0.2)",
 									}}
 								>
 									RSU (Net)
@@ -87,8 +111,9 @@ export default function MonthWiseBreakdown({ monthlyData, selectedRegime }) {
 									align="right"
 									sx={{
 										fontWeight: "bold",
-										bgcolor: "grey.200",
-										color: "grey.800",
+										bgcolor: "rgba(255, 255, 255, 0.05)",
+										color: "text.primary",
+										borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
 									}}
 								>
 									Gross Salary
@@ -97,8 +122,9 @@ export default function MonthWiseBreakdown({ monthlyData, selectedRegime }) {
 									align="right"
 									sx={{
 										fontWeight: "bold",
-										bgcolor: "error.main",
-										color: "error.contrastText",
+										bgcolor: "rgba(239, 68, 68, 0.1)",
+										color: "error.light",
+										borderBottom: "1px solid rgba(239, 68, 68, 0.2)",
 									}}
 								>
 									Income Tax
@@ -107,8 +133,9 @@ export default function MonthWiseBreakdown({ monthlyData, selectedRegime }) {
 									align="right"
 									sx={{
 										fontWeight: "bold",
-										bgcolor: "info.main",
-										color: "info.contrastText",
+										bgcolor: "rgba(59, 130, 246, 0.1)",
+										color: "primary.light",
+										borderBottom: "1px solid rgba(59, 130, 246, 0.2)",
 									}}
 								>
 									Provident Fund
@@ -117,8 +144,9 @@ export default function MonthWiseBreakdown({ monthlyData, selectedRegime }) {
 									align="right"
 									sx={{
 										fontWeight: "bold",
-										bgcolor: "success.main",
-										color: "success.contrastText",
+										bgcolor: "rgba(34, 197, 94, 0.1)",
+										color: "success.light",
+										borderBottom: "1px solid rgba(34, 197, 94, 0.2)",
 									}}
 								>
 									Net Salary
@@ -130,8 +158,7 @@ export default function MonthWiseBreakdown({ monthlyData, selectedRegime }) {
 								<TableRow
 									key={month.month}
 									sx={{
-										"&:nth-of-type(odd)": { bgcolor: "action.hover" },
-										"&:hover": { bgcolor: "action.selected" },
+										"&:hover": { bgcolor: "rgba(255,255,255,0.02)" },
 									}}
 								>
 									<TableCell
@@ -139,19 +166,38 @@ export default function MonthWiseBreakdown({ monthlyData, selectedRegime }) {
 											position: "sticky",
 											left: 0,
 											zIndex: 2,
-											bgcolor: "inherit",
+											bgcolor: "background.paper",
 											fontWeight: "medium",
+											borderBottom: "1px solid rgba(255,255,255,0.05)",
 										}}
 									>
 										{month.month}
 									</TableCell>
-									<TableCell align="right">
+									<TableCell
+										align="right"
+										sx={{
+											fontVariantNumeric: "tabular-nums",
+											borderBottom: "1px solid rgba(255,255,255,0.05)",
+										}}
+									>
 										{formatCurrency(month.basic)}
 									</TableCell>
-									<TableCell align="right">
+									<TableCell
+										align="right"
+										sx={{
+											fontVariantNumeric: "tabular-nums",
+											borderBottom: "1px solid rgba(255,255,255,0.05)",
+										}}
+									>
 										{formatCurrency(month.hra)}
 									</TableCell>
-									<TableCell align="right">
+									<TableCell
+										align="right"
+										sx={{
+											fontVariantNumeric: "tabular-nums",
+											borderBottom: "1px solid rgba(255,255,255,0.05)",
+										}}
+									>
 										{formatCurrency(month.allowances)}
 									</TableCell>
 									<TableCell
@@ -159,22 +205,34 @@ export default function MonthWiseBreakdown({ monthlyData, selectedRegime }) {
 										sx={{
 											fontWeight: month.hasRSUPayout ? "bold" : "normal",
 											bgcolor: month.hasRSUPayout
-												? "warning.50"
+												? "rgba(245, 158, 11, 0.05)"
 												: "transparent",
-											color: month.hasRSUPayout ? "warning.dark" : "inherit",
+											color: month.hasRSUPayout ? "warning.main" : "inherit",
+											fontVariantNumeric: "tabular-nums",
+											borderBottom: "1px solid rgba(255,255,255,0.05)",
 										}}
 									>
 										{month.hasRSUPayout ? formatCurrency(month.netRSU) : "—"}
 									</TableCell>
 									<TableCell
 										align="right"
-										sx={{ fontWeight: "semibold", bgcolor: "grey.50" }}
+										sx={{
+											fontWeight: "semibold",
+											bgcolor: "rgba(255, 255, 255, 0.05)",
+											fontVariantNumeric: "tabular-nums",
+											borderBottom: "1px solid rgba(255,255,255,0.05)",
+										}}
 									>
 										{formatCurrency(month.grossSalary)}
 									</TableCell>
 									<TableCell
 										align="right"
-										sx={{ color: "error.main", fontWeight: "medium" }}
+										sx={{
+											color: "error.main",
+											fontWeight: "medium",
+											fontVariantNumeric: "tabular-nums",
+											borderBottom: "1px solid rgba(255,255,255,0.05)",
+										}}
 									>
 										{formatCurrency(
 											isOldRegime ? month.incomeTaxOld : month.incomeTaxNew,
@@ -182,13 +240,23 @@ export default function MonthWiseBreakdown({ monthlyData, selectedRegime }) {
 									</TableCell>
 									<TableCell
 										align="right"
-										sx={{ color: "info.main", fontWeight: "medium" }}
+										sx={{
+											color: "primary.main",
+											fontWeight: "medium",
+											fontVariantNumeric: "tabular-nums",
+											borderBottom: "1px solid rgba(255,255,255,0.05)",
+										}}
 									>
 										{formatCurrency(month.providentFund)}
 									</TableCell>
 									<TableCell
 										align="right"
-										sx={{ color: "success.main", fontWeight: "bold" }}
+										sx={{
+											color: "success.main",
+											fontWeight: "bold",
+											fontVariantNumeric: "tabular-nums",
+											borderBottom: "1px solid rgba(255,255,255,0.05)",
+										}}
 									>
 										{formatCurrency(
 											isOldRegime ? month.netSalaryOld : month.netSalaryNew,
@@ -200,8 +268,13 @@ export default function MonthWiseBreakdown({ monthlyData, selectedRegime }) {
 					</Table>
 				</TableContainer>
 
-				{/* Annual Summary */}
-				<Box mt={4} p={3} bgcolor="grey.50" borderRadius={2}>
+				<Box
+					mt={4}
+					p={3}
+					bgcolor="rgba(255, 255, 255, 0.05)"
+					borderRadius={2}
+					border="1px solid rgba(255,255,255,0.1)"
+				>
 					<Typography variant="h6" fontWeight="bold" gutterBottom>
 						Annual Summary
 					</Typography>
@@ -210,6 +283,7 @@ export default function MonthWiseBreakdown({ monthlyData, selectedRegime }) {
 						justifyContent="space-between"
 						flexWrap="wrap"
 						gap={2}
+						sx={{ fontVariantNumeric: "tabular-nums" }}
 					>
 						<Box>
 							<Typography variant="body2" color="text.secondary">
@@ -259,7 +333,7 @@ export default function MonthWiseBreakdown({ monthlyData, selectedRegime }) {
 							<Typography variant="body2" color="text.secondary">
 								Total Provident Fund
 							</Typography>
-							<Typography variant="h6" fontWeight="bold" color="info.main">
+							<Typography variant="h6" fontWeight="bold" color="primary.main">
 								{formatCurrency(lastMonth.cumulativeProvidentFund)}
 							</Typography>
 						</Box>

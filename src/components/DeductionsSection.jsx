@@ -21,8 +21,10 @@ const DeductionsSection = memo(function DeductionsSection({
 				p: 3,
 				mb: 4,
 				borderRadius: 2,
-				bgcolor: "secondary.light",
-				background: "linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%)",
+				bgcolor: "background.paper",
+				border: "1px solid",
+				borderColor: "secondary.dark",
+				boxShadow: "0 0 20px rgba(168, 162, 158, 0.05)",
 			}}
 		>
 			<Box display="flex" alignItems="center" mb={3}>
@@ -48,6 +50,8 @@ const DeductionsSection = memo(function DeductionsSection({
 						value={getDisplayValue("section80C", formData.section80C)}
 						onChange={handleChange}
 						type="text"
+						inputMode="numeric"
+						autoComplete="transaction-amount"
 						inputProps={{ max: 150000 }}
 						InputProps={{
 							startAdornment: (
@@ -66,6 +70,8 @@ const DeductionsSection = memo(function DeductionsSection({
 						value={getDisplayValue("section80D", formData.section80D)}
 						onChange={handleChange}
 						type="text"
+						inputMode="numeric"
+						autoComplete="transaction-amount"
 						InputProps={{
 							startAdornment: (
 								<InputAdornment position="start">₹</InputAdornment>
@@ -83,6 +89,8 @@ const DeductionsSection = memo(function DeductionsSection({
 						value={getDisplayValue("section24B", formData.section24B)}
 						onChange={handleChange}
 						type="text"
+						inputMode="numeric"
+						autoComplete="transaction-amount"
 						inputProps={{ max: 200000 }}
 						InputProps={{
 							startAdornment: (
@@ -101,6 +109,8 @@ const DeductionsSection = memo(function DeductionsSection({
 						value={getDisplayValue("otherDeductions", formData.otherDeductions)}
 						onChange={handleChange}
 						type="text"
+						inputMode="numeric"
+						autoComplete="transaction-amount"
 						InputProps={{
 							startAdornment: (
 								<InputAdornment position="start">₹</InputAdornment>
