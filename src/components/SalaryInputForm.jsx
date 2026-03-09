@@ -34,17 +34,7 @@ const INITIAL_FORM_STATE = {
 };
 
 export default function SalaryInputForm({ onCalculate }) {
-	const [formData, setFormData] = useState(() => {
-		const savedData = localStorage.getItem("salaryFormData");
-		if (savedData) {
-			try {
-				return JSON.parse(savedData);
-			} catch (error) {
-				console.warn("Failed to load saved form data:", error);
-			}
-		}
-		return INITIAL_FORM_STATE;
-	});
+	const [formData, setFormData] = useState(INITIAL_FORM_STATE);
 
 	// Memoized utility functions to prevent unnecessary re-renders
 	const formatIndianNumber = useCallback((value) => {
@@ -68,10 +58,6 @@ export default function SalaryInputForm({ onCalculate }) {
 		return Math.round(basic * hraPercentage).toString();
 	}, []);
 
-	// Save data to localStorage whenever formData changes
-	useEffect(() => {
-		localStorage.setItem("salaryFormData", JSON.stringify(formData));
-	}, [formData]);
 
 	const handleChange = useCallback(
 		(e) => {
